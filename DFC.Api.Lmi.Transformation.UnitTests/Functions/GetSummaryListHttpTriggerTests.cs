@@ -16,8 +16,6 @@ namespace DFC.Api.Lmi.Transformation.UnitTests.Functions
     [Trait("Category", "GetSummaryList - http trigger function Unit Tests")]
     public class GetSummaryListHttpTriggerTests
     {
-        private const int Soc = 3231;
-
         private readonly ILogger<GetSummaryListHttpTrigger> fakeLogger = A.Fake<ILogger<GetSummaryListHttpTrigger>>();
         private readonly IMapper fakeMapper = A.Fake<IMapper>();
         private readonly IDocumentService<JobGroupModel> fakeDocumentService = A.Fake<IDocumentService<JobGroupModel>>();
@@ -34,7 +32,6 @@ namespace DFC.Api.Lmi.Transformation.UnitTests.Functions
             // Arrange
             const HttpStatusCode expectedResult = HttpStatusCode.OK;
             var dummyModels = A.CollectionOfDummy<JobGroupModel>(2);
-            var expectedModels = A.CollectionOfDummy<JobGroupSummaryItemModel>(2);
 
             A.CallTo(() => fakeDocumentService.GetAllAsync(A<string>.Ignored)).Returns(dummyModels);
 
