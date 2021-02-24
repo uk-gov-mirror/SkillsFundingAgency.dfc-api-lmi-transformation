@@ -1,11 +1,25 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26124.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DFC.Api.Lmi.Transformation", "DFC.Api.Lmi.Transformation\DFC.Api.Lmi.Transformation.csproj", "{552531CB-B089-4615-88F5-F92084BB32DE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DFC.Api.Lmi.Transformation", "DFC.Api.Lmi.Transformation\DFC.Api.Lmi.Transformation.csproj", "{552531CB-B089-4615-88F5-F92084BB32DE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DFC.Api.Lmi.Transformation.UnitTests", "DFC.Api.Lmi.Transformation.UnitTests\DFC.Api.Lmi.Transformation.UnitTests.csproj", "{0C1B0F23-A625-4FFA-A695-BFEB756B76B1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DFC.Api.Lmi.Transformation.UnitTests", "DFC.Api.Lmi.Transformation.UnitTests\DFC.Api.Lmi.Transformation.UnitTests.csproj", "{0C1B0F23-A625-4FFA-A695-BFEB756B76B1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Solution Items", "_Solution Items", "{A93E4C71-CEAB-4FF4-ABD9-B8DA0D0AA357}"
+	ProjectSection(SolutionItems) = preProject
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		CODEOWNERS = CODEOWNERS
+		DFC.Digital.CodeAnalysis.ruleset = DFC.Digital.CodeAnalysis.ruleset
+		LICENSE = LICENSE
+		README.md = README.md
+		stylecop.json = stylecop.json
+		UnitTests.CodeAnalysis.ruleset = UnitTests.CodeAnalysis.ruleset
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{CD4AA22B-D333-4F56-827D-25CEB9C6126D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +29,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{552531CB-B089-4615-88F5-F92084BB32DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -44,5 +55,14 @@ Global
 		{0C1B0F23-A625-4FFA-A695-BFEB756B76B1}.Release|x64.Build.0 = Release|Any CPU
 		{0C1B0F23-A625-4FFA-A695-BFEB756B76B1}.Release|x86.ActiveCfg = Release|Any CPU
 		{0C1B0F23-A625-4FFA-A695-BFEB756B76B1}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0C1B0F23-A625-4FFA-A695-BFEB756B76B1} = {CD4AA22B-D333-4F56-827D-25CEB9C6126D}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BD7DA885-FD85-48F5-A24D-30B109248440}
 	EndGlobalSection
 EndGlobal
