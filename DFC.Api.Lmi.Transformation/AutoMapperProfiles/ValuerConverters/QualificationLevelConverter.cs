@@ -11,9 +11,9 @@ using System.Linq;
 namespace DFC.Api.Lmi.Transformation.AutoMapperProfiles.ValuerConverters
 {
     [ExcludeFromCodeCoverage]
-    public class QualificationLevelConverter : IValueConverter<IList<IBaseContentItemModel>?, List<BreakdownModel>?>
+    public class QualificationLevelConverter : IValueConverter<IList<IBaseContentItemModel>?, QualificationLevelModel?>
     {
-        public List<BreakdownModel>? Convert(IList<IBaseContentItemModel>? sourceMember, ResolutionContext context)
+        public QualificationLevelModel? Convert(IList<IBaseContentItemModel>? sourceMember, ResolutionContext context)
         {
             _ = context ?? throw new ArgumentNullException(nameof(context));
 
@@ -38,7 +38,32 @@ namespace DFC.Api.Lmi.Transformation.AutoMapperProfiles.ValuerConverters
                 }
             }
 
-            return results;
+            var predictedEmployment = results.FirstOrDefault()?.PredictedEmployment;
+            if (predictedEmployment != null)
+            {
+                var firstYearResult = predictedEmployment.OrderBy(o => o.Year).FirstOrDefault();
+
+                if (firstYearResult != null)
+                {
+                    var maxEmploymentBreakdown = firstYearResult.Breakdown.OrderByDescending(o => o.Employment).First();
+
+                    if (maxEmploymentBreakdown != null)
+                    {
+                        var result = new QualificationLevelModel()
+                        {
+                            Year = firstYearResult.Year,
+                            Code = maxEmploymentBreakdown.Code,
+                            Name = maxEmploymentBreakdown.Name,
+                            Note = maxEmploymentBreakdown.Note,
+                            Employment = maxEmploymentBreakdown.Employment,
+                        };
+
+                        return result;
+                    }
+                }
+            }
+
+            return default;
         }
     }
 }

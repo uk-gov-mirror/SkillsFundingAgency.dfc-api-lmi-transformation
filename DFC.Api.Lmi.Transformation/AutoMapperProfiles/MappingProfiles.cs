@@ -35,9 +35,9 @@ namespace DFC.Api.Lmi.Transformation.AutoMapperProfiles
                 .ForMember(d => d.PredictedEmployment, opt => opt.ConvertUsing(new BreakdownYearListConverter(), a => a.ContentItems));
 
             CreateMap<LmiSocBreakdownYear, BreakdownYearModel>()
-                .ForMember(d => d.Breakdown, opt => opt.ConvertUsing(new BreakdownYearItemListConverter(), a => a.ContentItems));
+                .ForMember(d => d.Breakdown, opt => opt.ConvertUsing(new BreakdownYearValuesConverter(), a => a.ContentItems));
 
-            CreateMap<LmiSocBreakdownYearItem, BreakdownYearItemModel>();
+            CreateMap<LmiSocBreakdownYearValue, BreakdownYearValueModel>();
 
             CreateMap<LinkDetails, LmiSocJobProfile>()
                 .ForMember(d => d.Url, s => s.Ignore())
@@ -89,7 +89,7 @@ namespace DFC.Api.Lmi.Transformation.AutoMapperProfiles
                 .ForMember(d => d.ContentLinks, s => s.Ignore())
                 .ForMember(d => d.ContentItems, s => s.Ignore());
 
-            CreateMap<LinkDetails, LmiSocBreakdownYearItem>()
+            CreateMap<LinkDetails, LmiSocBreakdownYearValue>()
                 .ForMember(d => d.Url, s => s.Ignore())
                 .ForMember(d => d.ItemId, s => s.Ignore())
                 .ForMember(d => d.Title, s => s.Ignore())

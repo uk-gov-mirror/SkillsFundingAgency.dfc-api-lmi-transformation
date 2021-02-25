@@ -11,9 +11,9 @@ using System.Linq;
 namespace DFC.Api.Lmi.Transformation.AutoMapperProfiles.ValuerConverters
 {
     [ExcludeFromCodeCoverage]
-    public class BreakdownYearItemListConverter : IValueConverter<IList<IBaseContentItemModel>?, List<BreakdownYearItemModel>?>
+    public class BreakdownYearValuesConverter : IValueConverter<IList<IBaseContentItemModel>?, List<BreakdownYearValueModel>?>
     {
-        public List<BreakdownYearItemModel>? Convert(IList<IBaseContentItemModel>? sourceMember, ResolutionContext context)
+        public List<BreakdownYearValueModel>? Convert(IList<IBaseContentItemModel>? sourceMember, ResolutionContext context)
         {
             _ = context ?? throw new ArgumentNullException(nameof(context));
 
@@ -22,18 +22,18 @@ namespace DFC.Api.Lmi.Transformation.AutoMapperProfiles.ValuerConverters
                 return default;
             }
 
-            var results = new List<BreakdownYearItemModel>();
+            var results = new List<BreakdownYearValueModel>();
 
             foreach (var item in sourceMember)
             {
                 switch (item.ContentType)
                 {
-                    case nameof(LmiSocBreakdownYearItem):
-                        if (item is LmiSocBreakdownYearItem lmiSocBreakdownYearItem)
+                    case nameof(LmiSocBreakdownYearValue):
+                        if (item is LmiSocBreakdownYearValue lmiSocBreakdownYearValues)
                         {
-                            var model = context.Mapper.Map<BreakdownYearItemModel>(lmiSocBreakdownYearItem);
+                            var model = context.Mapper.Map<BreakdownYearValueModel>(lmiSocBreakdownYearValues);
 
-                            switch (lmiSocBreakdownYearItem.Measure)
+                            switch (lmiSocBreakdownYearValues.Measure)
                             {
                                 case Constants.MeasureForRegion:
                                     var excludeRegions = new[] { Constants.RegionCodeForWales, Constants.RegionCodeForScotland, Constants.RegionCodeForNorthernIreland };
@@ -58,9 +58,6 @@ namespace DFC.Api.Lmi.Transformation.AutoMapperProfiles.ValuerConverters
             {
                 switch (results.First().Measure)
                 {
-                    case Constants.MeasureForQualification:
-                        results = results.OrderByDescending(o => o.Employment).Take(1).ToList();
-                        break;
                     case Constants.MeasureForIndustry:
                         results = results.OrderByDescending(o => o.Employment).Take(10).ToList();
                         break;
