@@ -34,7 +34,7 @@ namespace DFC.Api.Lmi.Transformation.Services
             contentTypeMappingService.AddMapping(nameof(LmiSocPredictedYear), typeof(LmiSocPredictedYear));
             contentTypeMappingService.AddMapping(nameof(LmiSocBreakdown), typeof(LmiSocBreakdown));
             contentTypeMappingService.AddMapping(nameof(LmiSocBreakdownYear), typeof(LmiSocBreakdownYear));
-            contentTypeMappingService.AddMapping(nameof(LmiSocBreakdownYearItem), typeof(LmiSocBreakdownYearItem));
+            contentTypeMappingService.AddMapping(nameof(LmiSocBreakdownYearValue), typeof(LmiSocBreakdownYearValue));
         }
 
         public async Task GetAndTransformAsync()
