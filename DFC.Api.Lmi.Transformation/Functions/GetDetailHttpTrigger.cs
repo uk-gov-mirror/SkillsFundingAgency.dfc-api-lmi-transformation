@@ -27,7 +27,7 @@ namespace DFC.Api.Lmi.Transformation.Functions
         }
 
         [FunctionName("GetDetail")]
-        [Display(Name = "Get detail by SOC", Description = "Receives a job-group detail.")]
+        [Display(Name = "Get detail by SOC", Description = "Retrieves a job-group detail.")]
         [ProducesResponseType(typeof(JobGroupModel), (int)HttpStatusCode.OK)]
         [Response(HttpStatusCode = (int)HttpStatusCode.OK, Description = "Detail retrieved", ShowSchema = false)]
         [Response(HttpStatusCode = (int)HttpStatusCode.BadRequest, Description = "Invalid request data", ShowSchema = false)]

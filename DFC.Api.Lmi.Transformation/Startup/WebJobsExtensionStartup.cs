@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AzureFunctions.Extensions.Swashbuckle;
 using DFC.Api.Lmi.Transformation.Contracts;
 using DFC.Api.Lmi.Transformation.Models.JobGroupModels;
 using DFC.Api.Lmi.Transformation.Services;
@@ -8,12 +9,14 @@ using DFC.Compui.Cosmos.Contracts;
 using DFC.Compui.Subscriptions.Pkg.Netstandard.Extensions;
 using DFC.Content.Pkg.Netcore.Data.Models.ClientOptions;
 using DFC.Content.Pkg.Netcore.Extensions;
+using DFC.Swagger.Standard;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 
 [assembly: WebJobsStartup(typeof(WebJobsExtensionStartup), "Web Jobs Extension Startup")]
 
@@ -38,11 +41,13 @@ namespace DFC.Api.Lmi.Transformation.Startup
 
             builder.Services.AddSingleton(configuration.GetSection(nameof(CmsApiClientOptions)).Get<CmsApiClientOptions>() ?? new CmsApiClientOptions());
 
+            builder.AddSwashBuckle(Assembly.GetExecutingAssembly());
             builder.Services.AddHttpClient();
             builder.Services.AddApplicationInsightsTelemetry();
             builder.Services.AddAutoMapper(typeof(WebJobsExtensionStartup).Assembly);
             builder.Services.AddDocumentServices<JobGroupModel>(cosmosDbConnection, false);
             builder.Services.AddSubscriptionService(configuration);
+            builder.Services.AddTransient<ISwaggerDocumentGenerator, SwaggerDocumentGenerator>();
             builder.Services.AddTransient<ILmiWebhookReceiverService, LmiWebhookReceiverService>();
             builder.Services.AddTransient<ILmiWebhookService, LmiWebhookService>();
             builder.Services.AddTransient<ITransformationService, TransformationService>();
