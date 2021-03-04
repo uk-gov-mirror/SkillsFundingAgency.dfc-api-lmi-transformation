@@ -58,6 +58,9 @@ namespace DFC.Api.Lmi.Transformation.AutoMapperProfiles.ValuerConverters
             {
                 switch (results.First().Measure)
                 {
+                    case Constants.MeasureForRegion:
+                        results = results.OrderBy(o => o.Name).ToList();
+                        break;
                     case Constants.MeasureForIndustry:
                         results = results.OrderByDescending(o => o.Employment).Take(10).ToList();
                         break;

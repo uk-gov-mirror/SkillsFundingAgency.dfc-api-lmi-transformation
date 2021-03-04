@@ -37,7 +37,7 @@ namespace DFC.Api.Lmi.Transformation.AutoMapperProfiles.ValuerConverters
                 }
             }
 
-            return results;
+            return results.OrderBy(o => o.Title).ToList();
         }
     }
 }
