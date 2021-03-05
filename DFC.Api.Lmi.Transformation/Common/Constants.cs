@@ -12,5 +12,7 @@ namespace DFC.Api.Lmi.Transformation.Common
         public const int RegionCodeForWales = 10;
         public const int RegionCodeForScotland = 11;
         public const int RegionCodeForNorthernIreland = 12;
+
+        public const string ApiForJobGroups = "lmisoc";
     }
 }

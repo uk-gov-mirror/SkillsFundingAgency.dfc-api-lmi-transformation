@@ -50,6 +50,8 @@ namespace DFC.Api.Lmi.Transformation.Startup
             builder.Services.AddTransient<ISwaggerDocumentGenerator, SwaggerDocumentGenerator>();
             builder.Services.AddTransient<ILmiWebhookReceiverService, LmiWebhookReceiverService>();
             builder.Services.AddTransient<ILmiWebhookService, LmiWebhookService>();
+            builder.Services.AddTransient<IWebhookContentService, WebhookContentService>();
+            builder.Services.AddTransient<IWebhookDeleteService, WebhookDeleteService>();
             builder.Services.AddTransient<ITransformationService, TransformationService>();
 
             var policyRegistry = builder.Services.AddPolicyRegistry();

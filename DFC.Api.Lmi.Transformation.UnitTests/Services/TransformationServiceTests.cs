@@ -8,6 +8,8 @@ using FakeItEasy;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
+using System.Net;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -29,10 +31,11 @@ namespace DFC.Api.Lmi.Transformation.UnitTests.Services
         }
 
         [Fact]
-        public async Task TransformationServiceGetAndTransformIsSuccessful()
+        public async Task TransformationServiceTransformIsSuccessful()
         {
             // Arrange
             const int collectionCount = 2;
+            const HttpStatusCode expectedResult = HttpStatusCode.OK;
             var dummyModels = A.CollectionOfDummy<SummaryItem>(collectionCount);
             var dummyLmiSocModel = A.Dummy<LmiSoc>();
             var dummyJobGroupModel = A.Dummy<JobGroupModel>();
@@ -41,61 +44,151 @@ namespace DFC.Api.Lmi.Transformation.UnitTests.Services
             A.CallTo(() => fakeDocumentService.PurgeAsync()).Returns(true);
             A.CallTo(() => fakeCmsApiService.GetItemAsync<LmiSoc>(A<Uri>.Ignored)).Returns(dummyLmiSocModel);
             A.CallTo(() => fakeMapper.Map<JobGroupModel>(A<LmiSoc>.Ignored)).Returns(dummyJobGroupModel);
+            A.CallTo(() => fakeDocumentService.GetAsync(A<Expression<Func<JobGroupModel, bool>>>.Ignored, A<string>.Ignored)).Returns(A.Dummy<JobGroupModel>());
+            A.CallTo(() => fakeDocumentService.UpsertAsync(A<JobGroupModel>.Ignored)).Returns(HttpStatusCode.OK);
 
             // Act
-            await transformationService.GetAndTransformAsync().ConfigureAwait(false);
+            var result = await transformationService.TransformAsync().ConfigureAwait(false);
 
             // Assert
             A.CallTo(() => fakeCmsApiService.GetSummaryAsync<SummaryItem>()).MustHaveHappenedOnceExactly();
             A.CallTo(() => fakeDocumentService.PurgeAsync()).MustHaveHappenedOnceExactly();
             A.CallTo(() => fakeCmsApiService.GetItemAsync<LmiSoc>(A<Uri>.Ignored)).MustHaveHappened(collectionCount, Times.Exactly);
             A.CallTo(() => fakeMapper.Map<JobGroupModel>(A<LmiSoc>.Ignored)).MustHaveHappened(collectionCount, Times.Exactly);
+            A.CallTo(() => fakeDocumentService.GetAsync(A<Expression<Func<JobGroupModel, bool>>>.Ignored, A<string>.Ignored)).MustHaveHappened(collectionCount, Times.Exactly);
             A.CallTo(() => fakeDocumentService.UpsertAsync(A<JobGroupModel>.Ignored)).MustHaveHappened(collectionCount, Times.Exactly);
 
-            Assert.True(true);
+            Assert.Equal(expectedResult, result);
         }
 
         [Fact]
-        public async Task TransformationServiceGetAndTransformReturnsNoSummaries()
+        public async Task TransformationServiceTransformReturnsNoSummaries()
         {
             // Arrange
             const int collectionCount = 0;
+            const HttpStatusCode expectedResult = HttpStatusCode.OK;
             var noModels = A.CollectionOfDummy<SummaryItem>(collectionCount);
 
             A.CallTo(() => fakeCmsApiService.GetSummaryAsync<SummaryItem>()).Returns(noModels);
 
             // Act
-            await transformationService.GetAndTransformAsync().ConfigureAwait(false);
+            var result = await transformationService.TransformAsync().ConfigureAwait(false);
 
             // Assert
             A.CallTo(() => fakeCmsApiService.GetSummaryAsync<SummaryItem>()).MustHaveHappenedOnceExactly();
             A.CallTo(() => fakeDocumentService.PurgeAsync()).MustNotHaveHappened();
             A.CallTo(() => fakeCmsApiService.GetItemAsync<LmiSoc>(A<Uri>.Ignored)).MustNotHaveHappened();
             A.CallTo(() => fakeMapper.Map<JobGroupModel>(A<LmiSoc>.Ignored)).MustNotHaveHappened();
+            A.CallTo(() => fakeDocumentService.GetAsync(A<Expression<Func<JobGroupModel, bool>>>.Ignored, A<string>.Ignored)).MustNotHaveHappened();
             A.CallTo(() => fakeDocumentService.UpsertAsync(A<JobGroupModel>.Ignored)).MustNotHaveHappened();
 
-            Assert.True(true);
+            Assert.Equal(expectedResult, result);
         }
 
         [Fact]
-        public async Task TransformationServiceGetAndTransformReturnsNullForSummaries()
+        public async Task TransformationServiceTransformReturnsNullForSummaries()
         {
             // Arrange
+            const HttpStatusCode expectedResult = HttpStatusCode.OK;
             IList<SummaryItem>? nullModels = default;
 
             A.CallTo(() => fakeCmsApiService.GetSummaryAsync<SummaryItem>()).Returns(nullModels);
 
             // Act
-            await transformationService.GetAndTransformAsync().ConfigureAwait(false);
+            var result = await transformationService.TransformAsync().ConfigureAwait(false);
 
             // Assert
             A.CallTo(() => fakeCmsApiService.GetSummaryAsync<SummaryItem>()).MustHaveHappenedOnceExactly();
             A.CallTo(() => fakeDocumentService.PurgeAsync()).MustNotHaveHappened();
             A.CallTo(() => fakeCmsApiService.GetItemAsync<LmiSoc>(A<Uri>.Ignored)).MustNotHaveHappened();
             A.CallTo(() => fakeMapper.Map<JobGroupModel>(A<LmiSoc>.Ignored)).MustNotHaveHappened();
+            A.CallTo(() => fakeDocumentService.GetAsync(A<Expression<Func<JobGroupModel, bool>>>.Ignored, A<string>.Ignored)).MustNotHaveHappened();
             A.CallTo(() => fakeDocumentService.UpsertAsync(A<JobGroupModel>.Ignored)).MustNotHaveHappened();
 
-            Assert.True(true);
+            Assert.Equal(expectedResult, result);
+        }
+
+        [Fact]
+        public async Task TransformationServiceTransformItemIsSuccessful()
+        {
+            // Arrange
+            const HttpStatusCode expectedResult = HttpStatusCode.OK;
+            var dummyLmiSocModel = A.Dummy<LmiSoc>();
+            var dummyJobGroupModel = A.Dummy<JobGroupModel>();
+
+            A.CallTo(() => fakeCmsApiService.GetItemAsync<LmiSoc>(A<Uri>.Ignored)).Returns(dummyLmiSocModel);
+            A.CallTo(() => fakeMapper.Map<JobGroupModel>(A<LmiSoc>.Ignored)).Returns(dummyJobGroupModel);
+            A.CallTo(() => fakeDocumentService.GetAsync(A<Expression<Func<JobGroupModel, bool>>>.Ignored, A<string>.Ignored)).Returns(A.Dummy<JobGroupModel>());
+            A.CallTo(() => fakeDocumentService.UpsertAsync(A<JobGroupModel>.Ignored)).Returns(HttpStatusCode.OK);
+
+            // Act
+            var result = await transformationService.TransformItemAsync(new Uri("https://somewhere.com", UriKind.Absolute)).ConfigureAwait(false);
+
+            // Assert
+            A.CallTo(() => fakeCmsApiService.GetItemAsync<LmiSoc>(A<Uri>.Ignored)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => fakeMapper.Map<JobGroupModel>(A<LmiSoc>.Ignored)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => fakeDocumentService.GetAsync(A<Expression<Func<JobGroupModel, bool>>>.Ignored, A<string>.Ignored)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => fakeDocumentService.UpsertAsync(A<JobGroupModel>.Ignored)).MustHaveHappenedOnceExactly();
+
+            Assert.Equal(expectedResult, result);
+        }
+
+        [Fact]
+        public async Task TransformationServiceTransformItemForNoItemReturnsBadRequest()
+        {
+            // Arrange
+            const HttpStatusCode expectedResult = HttpStatusCode.BadRequest;
+            JobGroupModel? nullJobGroupModel = null;
+
+            A.CallTo(() => fakeCmsApiService.GetItemAsync<LmiSoc>(A<Uri>.Ignored)).Returns(A.Dummy<LmiSoc>());
+            A.CallTo(() => fakeMapper.Map<JobGroupModel?>(A<LmiSoc>.Ignored)).Returns(nullJobGroupModel);
+            A.CallTo(() => fakeDocumentService.GetAsync(A<Expression<Func<JobGroupModel, bool>>>.Ignored, A<string>.Ignored)).Returns(A.Dummy<JobGroupModel>());
+            A.CallTo(() => fakeDocumentService.UpsertAsync(A<JobGroupModel>.Ignored)).Returns(HttpStatusCode.OK);
+
+            // Act
+            var result = await transformationService.TransformItemAsync(new Uri("https://somewhere.com", UriKind.Absolute)).ConfigureAwait(false);
+
+            // Assert
+            A.CallTo(() => fakeCmsApiService.GetItemAsync<LmiSoc>(A<Uri>.Ignored)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => fakeMapper.Map<JobGroupModel>(A<LmiSoc>.Ignored)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => fakeDocumentService.GetAsync(A<Expression<Func<JobGroupModel, bool>>>.Ignored, A<string>.Ignored)).MustNotHaveHappened();
+            A.CallTo(() => fakeDocumentService.UpsertAsync(A<JobGroupModel>.Ignored)).MustNotHaveHappened();
+
+            Assert.Equal(expectedResult, result);
+        }
+
+        [Fact]
+        public async Task TransformationServicePurgeIsSuccessful()
+        {
+            // Arrange
+            const bool expectedResult = true;
+
+            A.CallTo(() => fakeDocumentService.PurgeAsync()).Returns(true);
+
+            // Act
+            var result = await transformationService.PurgeAsync().ConfigureAwait(false);
+
+            // Assert
+            A.CallTo(() => fakeDocumentService.PurgeAsync()).MustHaveHappenedOnceExactly();
+
+            Assert.Equal(expectedResult, result);
+        }
+
+        [Fact]
+        public async Task TransformationServiceDeleteIsSuccessful()
+        {
+            // Arrange
+            const bool expectedResult = true;
+
+            A.CallTo(() => fakeDocumentService.DeleteAsync(A<Guid>.Ignored)).Returns(true);
+
+            // Act
+            var result = await transformationService.DeleteAsync(Guid.NewGuid()).ConfigureAwait(false);
+
+            // Assert
+            A.CallTo(() => fakeDocumentService.DeleteAsync(A<Guid>.Ignored)).MustHaveHappenedOnceExactly();
+
+            Assert.Equal(expectedResult, result);
         }
     }
 }

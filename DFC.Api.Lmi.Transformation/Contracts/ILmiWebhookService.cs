@@ -7,6 +7,6 @@ namespace DFC.Api.Lmi.Transformation.Contracts
 {
     public interface ILmiWebhookService
     {
-        Task<HttpStatusCode> ProcessMessageAsync(WebhookCacheOperation webhookCacheOperation, Guid eventId, Uri url);
+        Task<HttpStatusCode> ProcessMessageAsync(WebhookCacheOperation webhookCacheOperation, Guid eventId, Guid contentId, Uri url);
     }
 }
