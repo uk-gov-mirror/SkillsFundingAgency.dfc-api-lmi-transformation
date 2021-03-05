@@ -1,4 +1,5 @@
-﻿using DFC.Api.Lmi.Transformation.Contracts;
+﻿using DFC.Api.Lmi.Transformation.Common;
+using DFC.Api.Lmi.Transformation.Contracts;
 using DFC.Api.Lmi.Transformation.Enums;
 using DFC.Api.Lmi.Transformation.Services;
 using FakeItEasy;
@@ -14,12 +15,48 @@ namespace DFC.Api.Lmi.Transformation.UnitTests.Services
     public class LmiWebhookServiceTests
     {
         private readonly ILogger<LmiWebhookService> fakeLogger = A.Fake<ILogger<LmiWebhookService>>();
-        private readonly ITransformationService fakeTransformationService = A.Fake<ITransformationService>();
+        private readonly IWebhookContentService fakeWebhookContentService = A.Fake<IWebhookContentService>();
+        private readonly IWebhookDeleteService fakeWebhookDeleteService = A.Fake<IWebhookDeleteService>();
         private readonly LmiWebhookService lmiWebhookService;
 
         public LmiWebhookServiceTests()
         {
-            lmiWebhookService = new LmiWebhookService(fakeLogger, fakeTransformationService);
+            lmiWebhookService = new LmiWebhookService(fakeLogger, fakeWebhookContentService, fakeWebhookDeleteService);
+        }
+
+        [Theory]
+        [InlineData(null, MessageContentType.None)]
+        [InlineData("", MessageContentType.None)]
+        [InlineData("https://somewhere.com/api/" + Constants.ApiForJobGroups, MessageContentType.JobGroup)]
+        [InlineData("https://somewhere.com/api/" + Constants.ApiForJobGroups + "/", MessageContentType.JobGroupItem)]
+        public void LmiWebhookServiceDetermineMessageContentTypeReturnsExpected(string? apiEndpoint, MessageContentType expectedResponse)
+        {
+            // Arrange
+
+            // Act
+            var result = LmiWebhookService.DetermineMessageContentType(apiEndpoint);
+
+            // Assert
+            Assert.Equal(expectedResponse, result);
+        }
+
+        [Fact]
+        public async Task LmiWebhookServiceProcessMessageForDeleteReturnsSuccess()
+        {
+            // Arrange
+            const HttpStatusCode expectedResult = HttpStatusCode.OK;
+            var apiEndpoint = $"https://somewhere.com/api/{Constants.ApiForJobGroups}";
+
+            A.CallTo(() => fakeWebhookDeleteService.ProcessDeleteAsync(A<Guid>.Ignored, A<Guid>.Ignored, A<MessageContentType>.Ignored)).Returns(expectedResult);
+
+            // Act
+            var result = await lmiWebhookService.ProcessMessageAsync(WebhookCacheOperation.Delete, Guid.NewGuid(), Guid.NewGuid(), new Uri(apiEndpoint, UriKind.Absolute)).ConfigureAwait(false);
+
+            // Assert
+            A.CallTo(() => fakeWebhookContentService.ProcessContentAsync(A<Guid>.Ignored, A<MessageContentType>.Ignored, A<Uri>.Ignored)).MustNotHaveHappened();
+            A.CallTo(() => fakeWebhookDeleteService.ProcessDeleteAsync(A<Guid>.Ignored, A<Guid>.Ignored, A<MessageContentType>.Ignored)).MustHaveHappenedOnceExactly();
+
+            Assert.Equal(expectedResult, result);
         }
 
         [Fact]
@@ -27,31 +64,50 @@ namespace DFC.Api.Lmi.Transformation.UnitTests.Services
         {
             // Arrange
             const HttpStatusCode expectedResult = HttpStatusCode.OK;
+            var apiEndpoint = $"https://somewhere.com/api/{Constants.ApiForJobGroups}";
 
-            A.CallTo(() => fakeTransformationService.GetAndTransformAsync());
+            A.CallTo(() => fakeWebhookContentService.ProcessContentAsync(A<Guid>.Ignored, A<MessageContentType>.Ignored, A<Uri>.Ignored)).Returns(expectedResult);
 
             // Act
-            var result = await lmiWebhookService.ProcessMessageAsync(WebhookCacheOperation.CreateOrUpdate, Guid.NewGuid(), new Uri("https://somewhere.com", UriKind.Absolute)).ConfigureAwait(false);
+            var result = await lmiWebhookService.ProcessMessageAsync(WebhookCacheOperation.CreateOrUpdate, Guid.NewGuid(), Guid.NewGuid(), new Uri(apiEndpoint, UriKind.Absolute)).ConfigureAwait(false);
 
             // Assert
-            A.CallTo(() => fakeTransformationService.GetAndTransformAsync()).MustHaveHappenedOnceExactly();
+            A.CallTo(() => fakeWebhookContentService.ProcessContentAsync(A<Guid>.Ignored, A<MessageContentType>.Ignored, A<Uri>.Ignored)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => fakeWebhookDeleteService.ProcessDeleteAsync(A<Guid>.Ignored, A<Guid>.Ignored, A<MessageContentType>.Ignored)).MustNotHaveHappened();
 
             Assert.Equal(expectedResult, result);
         }
 
         [Fact]
-        public async Task LmiWebhookServiceProcessMessageFornoneReturnsSuccess()
+        public async Task LmiWebhookServiceProcessMessageForNoneReturnsBadRequest()
         {
             // Arrange
-            const HttpStatusCode expectedResult = HttpStatusCode.OK;
-
-            A.CallTo(() => fakeTransformationService.GetAndTransformAsync());
+            const HttpStatusCode expectedResult = HttpStatusCode.BadRequest;
+            var apiEndpoint = $"https://somewhere.com/api/{Constants.ApiForJobGroups}";
 
             // Act
-            var result = await lmiWebhookService.ProcessMessageAsync(WebhookCacheOperation.None, Guid.NewGuid(), new Uri("https://somewhere.com", UriKind.Absolute)).ConfigureAwait(false);
+            var result = await lmiWebhookService.ProcessMessageAsync(WebhookCacheOperation.None, Guid.NewGuid(), Guid.NewGuid(), new Uri(apiEndpoint, UriKind.Absolute)).ConfigureAwait(false);
 
             // Assert
-            A.CallTo(() => fakeTransformationService.GetAndTransformAsync()).MustNotHaveHappened();
+            A.CallTo(() => fakeWebhookContentService.ProcessContentAsync(A<Guid>.Ignored, A<MessageContentType>.Ignored, A<Uri>.Ignored)).MustNotHaveHappened();
+            A.CallTo(() => fakeWebhookDeleteService.ProcessDeleteAsync(A<Guid>.Ignored, A<Guid>.Ignored, A<MessageContentType>.Ignored)).MustNotHaveHappened();
+
+            Assert.Equal(expectedResult, result);
+        }
+
+        [Fact]
+        public async Task LmiWebhookServiceProcessMessageForBadMessageContentTypeReturnsBadRequest()
+        {
+            // Arrange
+            const HttpStatusCode expectedResult = HttpStatusCode.BadRequest;
+            var apiEndpoint = "https://somewhere.com/api/";
+
+            // Act
+            var result = await lmiWebhookService.ProcessMessageAsync(WebhookCacheOperation.CreateOrUpdate, Guid.NewGuid(), Guid.NewGuid(), new Uri(apiEndpoint, UriKind.Absolute)).ConfigureAwait(false);
+
+            // Assert
+            A.CallTo(() => fakeWebhookContentService.ProcessContentAsync(A<Guid>.Ignored, A<MessageContentType>.Ignored, A<Uri>.Ignored)).MustNotHaveHappened();
+            A.CallTo(() => fakeWebhookDeleteService.ProcessDeleteAsync(A<Guid>.Ignored, A<Guid>.Ignored, A<MessageContentType>.Ignored)).MustNotHaveHappened();
 
             Assert.Equal(expectedResult, result);
         }

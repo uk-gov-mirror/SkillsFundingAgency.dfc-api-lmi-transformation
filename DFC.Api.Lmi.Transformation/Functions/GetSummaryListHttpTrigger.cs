@@ -32,7 +32,7 @@ namespace DFC.Api.Lmi.Transformation.Functions
         }
 
         [FunctionName("GetSummaryList")]
-        [Display(Name = "Get summary list", Description = "Receives a summary list of job-groups.")]
+        [Display(Name = "Get summary list", Description = "Retrieves a summary list of job-groups.")]
         [ProducesResponseType(typeof(IList<JobGroupSummaryItemModel>), (int)HttpStatusCode.OK)]
         [Response(HttpStatusCode = (int)HttpStatusCode.OK, Description = "Summary list retrieved", ShowSchema = false)]
         [Response(HttpStatusCode = (int)HttpStatusCode.BadRequest, Description = "Invalid request data", ShowSchema = false)]
@@ -41,7 +41,7 @@ namespace DFC.Api.Lmi.Transformation.Functions
         [Response(HttpStatusCode = (int)HttpStatusCode.Forbidden, Description = "Insufficient access", ShowSchema = false)]
         [Response(HttpStatusCode = (int)HttpStatusCode.TooManyRequests, Description = "Too many requests being sent, by default the API supports 150 per minute.", ShowSchema = false)]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "job-groups/")] HttpRequest? request)
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "job-groups")] HttpRequest? request)
         {
             logger.LogInformation("Getting all job-groups");
 

@@ -27,7 +27,7 @@ namespace DFC.Api.Lmi.Transformation.Functions
         }
 
         [FunctionName("SubscriptionRegistration")]
-        [Display(Name = "Register Event Grid Subscription", Description = "Registered an Event Grid Subscription to an Event Grid Topic")]
+        [Display(Name = "Register Event Grid Subscription", Description = "Register an Event Grid Subscription to an Event Grid Topic")]
         [Response(HttpStatusCode = (int)HttpStatusCode.OK, Description = "Subscription Registration updated", ShowSchema = false)]
         [Response(HttpStatusCode = (int)HttpStatusCode.InternalServerError, Description = "SubscriptionRegistration error(s)", ShowSchema = false)]
         public async Task<IActionResult> Run(

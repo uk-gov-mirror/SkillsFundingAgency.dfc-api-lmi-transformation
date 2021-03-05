@@ -19,9 +19,9 @@ namespace DFC.Api.Lmi.Transformation.Services
         {
             { "draft", WebhookCacheOperation.CreateOrUpdate },
             { "published", WebhookCacheOperation.CreateOrUpdate },
-            //{ "draft-discarded", WebhookCacheOperation.Delete },
-            //{ "unpublished", WebhookCacheOperation.Delete },
-            //{ "deleted", WebhookCacheOperation.Delete },
+            { "draft-discarded", WebhookCacheOperation.Delete },
+            { "unpublished", WebhookCacheOperation.Delete },
+            { "deleted", WebhookCacheOperation.Delete },
         };
 
         private readonly ILogger<LmiWebhookReceiverService> logger;
@@ -67,6 +67,11 @@ namespace DFC.Api.Lmi.Transformation.Services
                 }
                 else if (eventGridEvent.Data is EventGridEventData eventGridEventData)
                 {
+                    if (!Guid.TryParse(eventGridEventData.ItemId, out Guid contentId))
+                    {
+                        throw new InvalidDataException($"Invalid Guid for EventGridEvent.Data.ItemId '{eventGridEventData.ItemId}'");
+                    }
+
                     if (!Uri.TryCreate(eventGridEventData.Api, UriKind.Absolute, out Uri? url))
                     {
                         throw new InvalidDataException($"Invalid Api url '{eventGridEventData.Api}' received for Event Id: {eventId}");
@@ -76,7 +81,7 @@ namespace DFC.Api.Lmi.Transformation.Services
 
                     logger.LogInformation($"Got Event Id: {eventId}: {eventGridEvent.EventType}: Cache operation: {cacheOperation} {url}");
 
-                    var result = await lmiWebhookService.ProcessMessageAsync(cacheOperation, eventId, url).ConfigureAwait(false);
+                    var result = await lmiWebhookService.ProcessMessageAsync(cacheOperation, eventId, contentId, url).ConfigureAwait(false);
 
                     LogResult(eventId, result);
                 }
@@ -94,19 +99,23 @@ namespace DFC.Api.Lmi.Transformation.Services
             switch (result)
             {
                 case HttpStatusCode.OK:
-                    logger.LogInformation($"Event Id: {eventId}: Replaced LMI / job-groups");
+                    logger.LogInformation($"Event Id: {eventId}, Updated Content");
                     break;
 
-                //case HttpStatusCode.Created:
-                //    logger.LogInformation($"Event Id: {eventId}: Created LMI / job-groups");
-                //    break;
+                case HttpStatusCode.Created:
+                    logger.LogInformation($"Event Id: {eventId}, Created Content");
+                    break;
 
-                //case HttpStatusCode.AlreadyReported:
-                //    logger.LogInformation($"Event Id: {eventId}: LMI / job-groups previously updated");
-                //    break;
+                case HttpStatusCode.AlreadyReported:
+                    logger.LogInformation($"Event Id: {eventId}, Content previously updated");
+                    break;
+
+                case HttpStatusCode.NoContent:
+                    logger.LogInformation($"Event Id: {eventId}, Content previously deleted");
+                    break;
 
                 default:
-                    throw new InvalidDataException($"Event Id: {eventId}: LMI / job-groups not updated: Status: {result}");
+                    throw new InvalidDataException($"Event Id: {eventId}, Content  not updated: Status: {result}");
             }
         }
     }
