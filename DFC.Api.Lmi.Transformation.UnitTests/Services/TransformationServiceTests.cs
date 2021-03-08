@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using DFC.Api.Lmi.Transformation.Contracts;
+using DFC.Api.Lmi.Transformation.Models;
 using DFC.Api.Lmi.Transformation.Models.ContentApiModels;
 using DFC.Api.Lmi.Transformation.Models.JobGroupModels;
 using DFC.Api.Lmi.Transformation.Services;
@@ -23,11 +25,19 @@ namespace DFC.Api.Lmi.Transformation.UnitTests.Services
         private readonly IContentTypeMappingService fakeContentTypeMappingService = A.Fake<IContentTypeMappingService>();
         private readonly ICmsApiService fakeCmsApiService = A.Fake<ICmsApiService>();
         private readonly IDocumentService<JobGroupModel> fakeDocumentService = A.Fake<IDocumentService<JobGroupModel>>();
+        private readonly IEventGridService fakeEventGridService = A.Fake<IEventGridService>();
         private readonly TransformationService transformationService;
+        private readonly EventGridClientOptions eventGridClientOptions = new EventGridClientOptions
+        {
+            ApiEndpoint = new Uri("https://somewhere.com", UriKind.Absolute),
+            SubjectPrefix = "SubjectPrefix",
+            TopicEndpoint = "TopicEndpoint",
+            TopicKey = "TopicKey",
+        };
 
         public TransformationServiceTests()
         {
-            transformationService = new TransformationService(fakeLogger, fakeMapper, fakeContentTypeMappingService, fakeCmsApiService, fakeDocumentService);
+            transformationService = new TransformationService(fakeLogger, fakeMapper, fakeContentTypeMappingService, fakeCmsApiService, fakeDocumentService, fakeEventGridService, eventGridClientOptions);
         }
 
         [Fact]
