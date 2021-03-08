@@ -14,6 +14,20 @@
         "DatabaseId": "dfc-api-lmi-transformation",
         "CollectionId": "job-groups",
         "PartitionKey": "/PartitionKey"
+      },
+      "LmiTemp": {
+        "AccessKey": "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==",
+        "EndpointUrl": "https://localhost:8081/",
+        "DatabaseId": "dfc-api-lmi-transformation",
+        "CollectionId": "job-groups-temp",
+        "PartitionKey": "/PartitionKey"
+      },
+      "LmiDifferences": {
+        "AccessKey": "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==",
+        "EndpointUrl": "https://localhost:8081/",
+        "DatabaseId": "dfc-api-lmi-transformation",
+        "CollectionId": "job-groups-differences",
+        "PartitionKey": "/PartitionKey"
       }
     }
   },
@@ -31,6 +45,12 @@
     "Timeout": "00:00:30",
     "BaseAddress": "__CmsApiBaseAddress__",
     "SummaryEndpoint": "lmisoc"
+  },
+  "EventGridClientOptions": {
+    "TopicEndpoint": "__EventGridTopicEndpoint__/api/events",
+    "SubjectPrefix": "/dfc-api-lmi-transformation/",
+    "TopicKey": "__EventGridTopicKey__",
+    "ApiEndpoint": "__ContentApiEndpoint__/api/execute/lmisoc"
   },
   "SubscriptionSettings": {
     "Endpoint": "__ThisAppWebhookEndpoint__",

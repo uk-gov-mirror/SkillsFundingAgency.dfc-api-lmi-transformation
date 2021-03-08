@@ -49,6 +49,16 @@ Configuration__CosmosDbConnections__LmiTransformation__EndpointUrl | __CosmosEnd
 Configuration__CosmosDbConnections__LmiTransformation__DatabaseId | dfc-api-lmi-transformation |
 Configuration__CosmosDbConnections__LmiTransformation__CollectionId | job-groups |
 Configuration__CosmosDbConnections__LmiTransformation__PartitionKey | /PartitionKey |
+Configuration__CosmosDbConnections__LmiTemp__AccessKey | __CosmosAccessKey__ |
+Configuration__CosmosDbConnections__LmiTemp__EndpointUrl | __CosmosEndpoint__ |
+Configuration__CosmosDbConnections__LmiTemp__DatabaseId | dfc-api-lmi-transformation |
+Configuration__CosmosDbConnections__LmiTemp__CollectionId | job-groups-temp |
+Configuration__CosmosDbConnections__LmiTemp__PartitionKey | /PartitionKey |
+Configuration__CosmosDbConnections__LmiDifferences__AccessKey | __CosmosAccessKey__ |
+Configuration__CosmosDbConnections__LmiDifferences__EndpointUrl | __CosmosEndpoint__ |
+Configuration__CosmosDbConnections__LmiDifferences__DatabaseId | dfc-api-lmi-transformation |
+Configuration__CosmosDbConnections__LmiDifferences__CollectionId | job-groups-differences |
+Configuration__CosmosDbConnections__LmiDifferences__PartitionKey | /PartitionKey |
 CmsApiClientOptions__BaseAddress | https://dfc-dev-api-cont-fa.azurewebsites.net/api/execute/ |
 CmsApiClientOptions__SummaryEndpoint | lmisoc |
 SubscriptionSettings__Endpoint | __ThisFunctionAppBaseAddress__/lmi/webhook |
@@ -56,6 +66,10 @@ SubscriptionSettings__SubscriptionServiceEndpoint | __SubscriptionServiceEndpoin
 SubscriptionSettings__ApiKey | __SubscriptionServiceApimKey__ |
 SubscriptionSettings__Filter__BeginsWith | /dfc-api-lmi-import/ |
 SubscriptionSettings__Filter__IncludeEventTypes__0 | published |
+EventGridClientOptions__TopicEndpoint | Event grid topic endpoint |
+EventGridClientOptions__SubjectPrefix | Message subject prefix |
+EventGridClientOptions__TopicKey | Event grid topic key |
+EventGridClientOptions__ApiEndpoint | Content API endpoint |
 
 ## Running locally
 

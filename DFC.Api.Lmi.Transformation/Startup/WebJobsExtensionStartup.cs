@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AzureFunctions.Extensions.Swashbuckle;
 using DFC.Api.Lmi.Transformation.Contracts;
+using DFC.Api.Lmi.Transformation.Models;
 using DFC.Api.Lmi.Transformation.Models.JobGroupModels;
 using DFC.Api.Lmi.Transformation.Services;
 using DFC.Api.Lmi.Transformation.Startup;
@@ -40,6 +41,7 @@ namespace DFC.Api.Lmi.Transformation.Startup
             var cosmosDbConnection = configuration.GetSection(CosmosDbLmiTransformationConfigAppSettings).Get<CosmosDbConnection>();
 
             builder.Services.AddSingleton(configuration.GetSection(nameof(CmsApiClientOptions)).Get<CmsApiClientOptions>() ?? new CmsApiClientOptions());
+            builder.Services.AddSingleton(configuration.GetSection(nameof(EventGridClientOptions)).Get<EventGridClientOptions>() ?? new EventGridClientOptions());
 
             builder.AddSwashBuckle(Assembly.GetExecutingAssembly());
             builder.Services.AddHttpClient();
@@ -53,6 +55,8 @@ namespace DFC.Api.Lmi.Transformation.Startup
             builder.Services.AddTransient<IWebhookContentService, WebhookContentService>();
             builder.Services.AddTransient<IWebhookDeleteService, WebhookDeleteService>();
             builder.Services.AddTransient<ITransformationService, TransformationService>();
+            builder.Services.AddTransient<IEventGridService, EventGridService>();
+            builder.Services.AddTransient<IEventGridClientService, EventGridClientService>();
 
             var policyRegistry = builder.Services.AddPolicyRegistry();
 

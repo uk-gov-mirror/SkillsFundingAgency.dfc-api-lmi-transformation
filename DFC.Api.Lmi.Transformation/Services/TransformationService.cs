@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using DFC.Api.Lmi.Transformation.Contracts;
+using DFC.Api.Lmi.Transformation.Enums;
+using DFC.Api.Lmi.Transformation.Models;
 using DFC.Api.Lmi.Transformation.Models.ContentApiModels;
 using DFC.Api.Lmi.Transformation.Models.JobGroupModels;
 using DFC.Compui.Cosmos.Contracts;
@@ -19,18 +21,24 @@ namespace DFC.Api.Lmi.Transformation.Services
         private readonly IMapper mapper;
         private readonly ICmsApiService cmsApiService;
         private readonly IDocumentService<JobGroupModel> jobGroupDocumentService;
+        private readonly IEventGridService eventGridService;
+        private readonly EventGridClientOptions eventGridClientOptions;
 
         public TransformationService(
             ILogger<TransformationService> logger,
             IMapper mapper,
             IContentTypeMappingService contentTypeMappingService,
             ICmsApiService cmsApiService,
-            IDocumentService<JobGroupModel> jobGroupDocumentService)
+            IDocumentService<JobGroupModel> jobGroupDocumentService,
+            IEventGridService eventGridService,
+            EventGridClientOptions eventGridClientOptions)
         {
             this.logger = logger;
             this.mapper = mapper;
             this.cmsApiService = cmsApiService;
             this.jobGroupDocumentService = jobGroupDocumentService;
+            this.eventGridService = eventGridService;
+            this.eventGridClientOptions = eventGridClientOptions;
 
             contentTypeMappingService.AddMapping(nameof(LmiSocJobProfile), typeof(LmiSocJobProfile));
             contentTypeMappingService.AddMapping(nameof(LmiSocPredicted), typeof(LmiSocPredicted));
@@ -54,6 +62,17 @@ namespace DFC.Api.Lmi.Transformation.Services
                     await TransformItemAsync(item.Url!).ConfigureAwait(false);
                 }
             }
+
+            var eventGridEventData = new EventGridEventData
+            {
+                ItemId = Guid.NewGuid().ToString(),
+                Api = $"{eventGridClientOptions.ApiEndpoint}",
+                DisplayText = "LMI transformed into job-groups",
+                VersionId = Guid.NewGuid().ToString(),
+                Author = eventGridClientOptions.SubjectPrefix,
+            };
+
+            await eventGridService.SendEventAsync(WebhookCacheOperation.CreateOrUpdate, eventGridEventData, eventGridClientOptions.SubjectPrefix).ConfigureAwait(false);
 
             logger.LogInformation($"Refreshed all Job Groups from Summary list");
 
