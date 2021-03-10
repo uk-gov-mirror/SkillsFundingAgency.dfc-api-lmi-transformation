@@ -17,9 +17,6 @@
       "Environment": {
         "value": "FOO"
       },
-      "cosmosDBName": {
-          "value": "dfc-dev-app-sharedresources-cdb"
-      },
       "cosmosDbKey": {
           "value": "not-a-real-key"
       },

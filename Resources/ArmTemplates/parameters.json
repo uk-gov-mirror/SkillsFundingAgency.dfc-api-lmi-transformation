@@ -2,9 +2,6 @@
     "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-      "cosmosDbName": {
-        "value": "__Neo4jUrlVisits__"
-      },
       "appSharedStorageAccountName": {
         "value": "__appSharedStorageAccountName__"
       },
@@ -20,7 +17,7 @@
       "aseResourceGroup": {
         "value": "__aseResourceGroup__"
       },
-      "cosmosDBName": {
+      "cosmosDbName": {
           "value": "__appSharedCosmosDBName__"
       },
       "cosmosDbKey": {
