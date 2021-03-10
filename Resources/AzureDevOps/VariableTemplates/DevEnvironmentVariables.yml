@@ -2,7 +2,7 @@ variables:
 - name: ReleaseEnvironmentName
   value: DEV
 - name: WebAppPrefix
-  value: dfc-dev-api-lmi-transformations
+  value: dfc-dev-api-lmi-transformation
 - name: ResourceGroup
   value: $(WebAppPrefix)-rg
 - name: aspTier
