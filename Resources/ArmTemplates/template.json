@@ -188,36 +188,36 @@
         "[variables('appServicePlanName')]"
       ]
     },
-    {
-      "name": "[variables('CosmosDbDatabaseName')]",
-      "type": "Microsoft.Resources/deployments",
-      "resourceGroup": "[parameters('CosmosDbResourceGroup')]",
-      "apiVersion": "2017-05-10",
-      "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-          "uri": "[concat(variables('BuildingBlocksDfcBaseUrl'),'CosmosDb/cosmos-database.json')]",
-          "contentVersion": "1.0.0.0"
-        },
-        "parameters": {
-          "accountName": {
-            "value": "[parameters('CosmosDbName')]"
-          },
-          "databaseName": {
-            "value": "[variables('CosmosDbDatabaseName')]"
-          },
-          "useSharedRequestUnits": {
-            "value": true
-          },
-          "offerThroughput": {
-            "value": "[parameters('lmiTransformationAppDatabaseThroughput')]"
-          },
-          "databaseNeedsCreation": {
-            "value": "[parameters('lmiTransformationAppDatabaseNeedsCreation')]"
-          }
-        }
-      }
-    },
+    // {
+    //   "name": "[variables('CosmosDbDatabaseName')]",
+    //   "type": "Microsoft.Resources/deployments",
+    //   "resourceGroup": "[parameters('CosmosDbResourceGroup')]",
+    //   "apiVersion": "2017-05-10",
+    //   "properties": {
+    //     "mode": "Incremental",
+    //     "templateLink": {
+    //       "uri": "[concat(variables('BuildingBlocksDfcBaseUrl'),'CosmosDb/cosmos-database.json')]",
+    //       "contentVersion": "1.0.0.0"
+    //     },
+    //     "parameters": {
+    //       "accountName": {
+    //         "value": "[parameters('CosmosDbName')]"
+    //       },
+    //       "databaseName": {
+    //         "value": "[variables('CosmosDbDatabaseName')]"
+    //       },
+    //       "useSharedRequestUnits": {
+    //         "value": true
+    //       },
+    //       "offerThroughput": {
+    //         "value": "[parameters('lmiTransformationAppDatabaseThroughput')]"
+    //       },
+    //       "databaseNeedsCreation": {
+    //         "value": "[parameters('lmiTransformationAppDatabaseNeedsCreation')]"
+    //       }
+    //     }
+    //   }
+    // },
     {
       "apiVersion": "2017-05-10",
       "name": "job-groups",
