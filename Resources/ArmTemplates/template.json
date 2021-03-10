@@ -218,39 +218,39 @@
         }
       }
     },
-    // {
-    //   "apiVersion": "2017-05-10",
-    //   "name": "[parameters('cosmosDbCollectionName')]",
-    //   "type": "Microsoft.Resources/deployments",
-    //   "resourceGroup": "[parameters('CosmosDbResourceGroup')]",
-    //   "properties": {
-    //     "mode": "Incremental",
-    //     "templateLink": {
-    //       "uri": "[concat(variables('BuildingBlocksDfcBaseUrl'), 'CosmosDb/cosmos-collection.json')]",
-    //       "contentVersion": "1.0.0.0"
-    //     },
-    //     "parameters": {
-    //       "accountName": {
-    //         "value": "[parameters('cosmosDbName')]"
-    //       },
-    //       "databaseName": {
-    //         "value": "[variables('cosmosDbDatabaseName')]"
-    //       },
-    //       "collectionName": {
-    //         "value": "[parameters('cosmosDbCollectionName')]"
-    //       },
-    //       "provisionRequestUnits": {
-    //         "value": false
-    //       },
-    //       "partitionKey": {
-    //         "value": "[variables('cosmosDbCollectionPartitionKey')]"
-    //       }
-    //     }
-    //   },
-    //   "dependsOn": [
-    //     "[variables('CosmosDbDatabaseName')]"
-    //   ]
-    // },
+    {
+      "apiVersion": "2017-05-10",
+      "name": "job-groups",
+      "type": "Microsoft.Resources/deployments",
+      "resourceGroup": "[parameters('CosmosDbResourceGroup')]",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(variables('BuildingBlocksDfcBaseUrl'), 'CosmosDb/cosmos-collection.json')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "accountName": {
+            "value": "[parameters('cosmosDbName')]"
+          },
+          "databaseName": {
+            "value": "[variables('cosmosDbDatabaseName')]"
+          },
+          "collectionName": {
+            "value": "job-groups"
+          },
+          "provisionRequestUnits": {
+            "value": false
+          },
+          "partitionKey": {
+            "value": "[variables('cosmosDbCollectionPartitionKey')]"
+          }
+        }
+      },
+      "dependsOn": [
+        "[variables('CosmosDbDatabaseName')]"
+      ]
+    },
     // {
     //   "apiVersion": "2017-05-10",
     //   "name": "[parameters('cosmosContentDbCollectionName')]",
