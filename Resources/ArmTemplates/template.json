@@ -63,7 +63,7 @@
       "metadata": {
         "description": "The name of the collection to create"
       }
-    },
+    }
   },
   "variables": {
     "appServicePlanName": "[concat(variables('resourcePrefix'), '-asp')]",
