@@ -7,14 +7,6 @@ variables:
   value: 1
 - name: WebAppPrefix
   value: dfc-pp
-- name: FunctionAppInsightName
-  value: $(WebAppPrefix)-api-visits-ai
-- name: FunctionAppName
-  value: $(WebAppPrefix)-api-visits-fa
-- name: ResourceGroup
-  value: $(WebAppPrefix)-api-visits-rg
-- name: appServicePlanName
-  value: $(WebAppPrefix)-api-visits-asp
 - name: aspTier
   value: Standard
 - name: aspInstances

@@ -17,23 +17,38 @@
       "Environment": {
         "value": "FOO"
       },
-      "FunctionAppName": {
-        "value": "dfc-dev-funcapp-v1-fa"
+      "cosmosDBName": {
+          "value": "dfc-dev-app-sharedresources-cdb"
       },
-      "FunctionAppInsightName": {
-        "value": "dfc-dev-funcapp-v1-ai"
+      "cosmosDbKey": {
+          "value": "not-a-real-key"
       },
-      "Neo4jUrl": {
-        "value": "http://some-database-instance/"
+      "CosmosDbResourceGroup": {
+          "value": "dfc-dev-app-sharedresources-rg"
       },
-      "Neo4jUser": {
-        "value": "someUsername"
+      "lmiTransformationAppDatabaseNeedsCreation": {
+          "value": true
       },
-      "Neo4jPassword": {
-        "value": "not-a-real-password"
+      "lmiTransformationAppDatabaseThroughput": {
+          "value": 2
+      },
+      "enableAlerts": {
+          "value": false
+      },
+      "cosmosDbName": {
+        "value": "cosmosDB"
       },
       "appSharedStorageAccountName": {
         "value": "dfcdevappsharedstr"
+      },
+      "ExceptionCountThreshold": {
+          "value": "0"
+      },
+      "MemoryPercentageThreshold": {
+          "value": "0"
+      },
+      "CPUPercentageThreshold": {
+          "value": "0"
       }
     }
   }

@@ -40,27 +40,3 @@ jobs:
             Location: '${{ parameters.Location }}'
             ArmOutputVariableName: '${{ parameters.ArmOutputVariableName }}'
             ArmTemplateFolder: '${{ parameters.ArmTemplateFolder }}'
-
-# Please see https://github.com/microsoft/azure-pipelines-yaml/blob/master/design/each-expression.md for more information on the each expression.
-- ${{ each apiPartition in parameters.Apis }}:
-  - ${{ each api in apiPartition }}:
-    - deployment: Deploy${{ api.name }}
-      displayName: "Deploy ${{ api.name }}"
-      environment: ${{ parameters.EnvironmentName }}
-      dependsOn: 
-      - DeployTemplate
-     # - SetupConditions
-     # - ${{ if api.dependsOn }}:
-      #  - Deploy${{ api.dependsOn }}
-     # condition: and(succeeded(), or(eq(dependencies.SetupConditions.outputs['setupConditionStep.projectsToDeploy'], '*'), contains(dependencies.SetupConditions.outputs['setupConditionStep.projectsToDeploy'], '${{ api.name }}')))
-      strategy:
-        runOnce:
-          deploy:
-            steps:
-            - template: ../StepTemplates/deploy-azure-function.yml
-              parameters:
-                WebAppName: '${{ api.azureFunctionName }}'
-                AzureSubscription: '${{ parameters.AzureSubscription }}'
-                FunctionAppDomain: '${{ parameters.FunctionAppDomain }}'
-                PackageFile: '${{ parameters.PackageFile }}'
-                ResourceGroup: '${{ parameters.ResourceGroup }}'

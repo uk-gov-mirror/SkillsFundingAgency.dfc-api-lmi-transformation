@@ -2,14 +2,8 @@
     "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-      "Neo4jUrl": {
+      "cosmosDbName": {
         "value": "__Neo4jUrlVisits__"
-      },
-      "Neo4jUser": {
-        "value": "__Neo4jUserVisits__"
-      },
-      "Neo4jPassword": {
-        "value": "__Neo4jPasswordVisits__"
       },
       "appSharedStorageAccountName": {
         "value": "__appSharedStorageAccountName__"
@@ -26,8 +20,23 @@
       "aseResourceGroup": {
         "value": "__aseResourceGroup__"
       },
-      "FunctionAppInsightName": {
-        "value": "__FunctionAppInsightName__"
+      "cosmosDBName": {
+          "value": "__appSharedCosmosDBName__"
+      },
+      "cosmosDbKey": {
+          "value": "__appSharedCosmosPrimaryKey__"
+      },
+      "CosmosDbResourceGroup": {
+          "value": "__appSharedResourceGroup__"
+      },
+      "lmiTransformationAppDatabaseNeedsCreation": {
+          "value": __CosmosDbDatabaseDoesntExist__
+      },
+      "lmiTransformationAppDatabaseThroughput": {
+          "value": __lmiTransformationAppDatabaseThroughput__
+      },
+      "enableAlerts": {
+          "value": __EnableAzureMonitorAlerting__
       },
       "aspSize": {
         "value": "__aspSize__"
@@ -41,8 +50,14 @@
             "comment": "Bug in tokenisation task prevents referencing Release.EnvironmentName directly.  https://github.com/TotalALM/VSTS-Tasks/issues/29"
         }
       },
-      "FunctionAppName": {
-        "value": "__FunctionAppName__"
+      "ExceptionCountThreshold": {
+          "value": "__ExceptionCountThreshold__"
+      },
+      "MemoryPercentageThreshold": {
+          "value": "__MemoryPercentageThreshold__"
+      },
+      "CPUPercentageThreshold": {
+          "value": "__CPUPercentageThreshold__"
       }
     }
   }
