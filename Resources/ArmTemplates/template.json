@@ -58,7 +58,19 @@
     "MemoryPercentageThreshold": {
       "type": "string"
     },
-    "cosmosDbCollectionName": {
+    "cosmosJobGroupDbCollectionName": {
+      "type": "string",
+      "metadata": {
+        "description": "The name of the collection to create"
+      }
+    },
+    "cosmosJobGroupTempDbCollectionName": {
+      "type": "string",
+      "metadata": {
+        "description": "The name of the collection to create"
+      }
+    },
+    "cosmosJobGroupDiffDbCollectionName": {
       "type": "string",
       "metadata": {
         "description": "The name of the collection to create"
@@ -226,7 +238,7 @@
     },
     {
       "apiVersion": "2017-05-10",
-      "name": "[parameters('cosmosDbCollectionName')]",
+      "name": "[parameters('cosmosJobGroupDbCollectionName')]",
       "type": "Microsoft.Resources/deployments",
       "resourceGroup": "[parameters('CosmosDbResourceGroup')]",
       "properties": {
@@ -243,7 +255,7 @@
             "value": "[variables('cosmosDbDatabaseName')]"
           },
           "collectionName": {
-            "value": "[parameters('cosmosDbCollectionName')]"
+            "value": "[parameters('cosmosJobGroupDbCollectionName')]"
           },
           "provisionRequestUnits": {
             "value": false
@@ -257,39 +269,71 @@
         "[variables('CosmosDbDatabaseName')]"
       ]
     },
-    // {
-    //   "apiVersion": "2017-05-10",
-    //   "name": "[parameters('cosmosContentDbCollectionName')]",
-    //   "type": "Microsoft.Resources/deployments",
-    //   "resourceGroup": "[parameters('CosmosDbResourceGroup')]",
-    //   "properties": {
-    //     "mode": "Incremental",
-    //     "templateLink": {
-    //       "uri": "[concat(variables('BuildingBlocksDfcBaseUrl'), 'CosmosDb/cosmos-collection.json')]",
-    //       "contentVersion": "1.0.0.0"
-    //     },
-    //     "parameters": {
-    //       "accountName": {
-    //         "value": "[parameters('cosmosDbName')]"
-    //       },
-    //       "databaseName": {
-    //         "value": "[variables('cosmosDbDatabaseName')]"
-    //       },
-    //       "collectionName": {
-    //         "value": "[parameters('cosmosContentDbCollectionName')]"
-    //       },
-    //       "provisionRequestUnits": {
-    //         "value": false
-    //       },
-    //       "partitionKey": {
-    //         "value": "[variables('cosmosDbCollectionPartitionKey')]"
-    //       }
-    //     }
-    //   },
-    //   "dependsOn": [
-    //     "[variables('CosmosDbDatabaseName')]"
-    //   ]
-    // },
+        {
+      "apiVersion": "2017-05-10",
+      "name": "[parameters('cosmosJobGroupTempDbCollectionName')]",
+      "type": "Microsoft.Resources/deployments",
+      "resourceGroup": "[parameters('CosmosDbResourceGroup')]",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(variables('BuildingBlocksDfcBaseUrl'), 'CosmosDb/cosmos-collection.json')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "accountName": {
+            "value": "[parameters('cosmosDbName')]"
+          },
+          "databaseName": {
+            "value": "[variables('cosmosDbDatabaseName')]"
+          },
+          "collectionName": {
+            "value": "[parameters('cosmosJobGroupTempDbCollectionName')]"
+          },
+          "provisionRequestUnits": {
+            "value": false
+          },
+          "partitionKey": {
+            "value": "[variables('cosmosDbCollectionPartitionKey')]"
+          }
+        }
+      },
+      "dependsOn": [
+        "[variables('CosmosDbDatabaseName')]"
+      ]
+    },    {
+      "apiVersion": "2017-05-10",
+      "name": "[parameters('cosmosJobGroupDiffDbCollectionName')]",
+      "type": "Microsoft.Resources/deployments",
+      "resourceGroup": "[parameters('CosmosDbResourceGroup')]",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(variables('BuildingBlocksDfcBaseUrl'), 'CosmosDb/cosmos-collection.json')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "accountName": {
+            "value": "[parameters('cosmosDbName')]"
+          },
+          "databaseName": {
+            "value": "[variables('cosmosDbDatabaseName')]"
+          },
+          "collectionName": {
+            "value": "[parameters('cosmosJobGroupDiffDbCollectionName')]"
+          },
+          "provisionRequestUnits": {
+            "value": false
+          },
+          "partitionKey": {
+            "value": "[variables('cosmosDbCollectionPartitionKey')]"
+          }
+        }
+      },
+      "dependsOn": [
+        "[variables('CosmosDbDatabaseName')]"
+      ]
+    },
     {
       "apiVersion": "2019-05-01",
       "name": "[concat(variables('functionAppInsightsName'), '-metric-exceptions')]",

@@ -1,8 +1,8 @@
 variables:
 - name: ReleaseEnvironmentName
-  value: DEV
+  value: DEV-DRAFT
 - name: WebAppPrefix
-  value: dfc-dev-api-lmi-transformations
+  value: dfc-dev-draft-api-lmi-transformations
 - name: ResourceGroup
   value: $(WebAppPrefix)-rg
 - name: aspTier
@@ -22,8 +22,8 @@ variables:
 - name: EnableAzureMonitorAlerting
   value: true
 - name: cosmosJobGroupDbCollectionName
-  value: job-groups
+  value: job-groups-draft
 - name: cosmosJobGroupTempDbCollectionName
-  value: job-groups-temp
+  value: job-groups-temp-draft
 - name: cosmosJobGroupDiffDbCollectionName
-  value: job-groups-differences
+  value: job-groups-differences-draft
