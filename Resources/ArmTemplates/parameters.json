@@ -26,6 +26,9 @@
       "CosmosDbResourceGroup": {
           "value": "__appSharedResourceGroup__"
       },
+      "cosmosDbCollectionName": {
+        "value": "__cosmosDbCollectionName__"
+      },
       "lmiTransformationAppDatabaseNeedsCreation": {
           "value": __CosmosDbDatabaseDoesntExist__
       },

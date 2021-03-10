@@ -35,6 +35,9 @@
       "cosmosDbName": {
         "value": "cosmosDB"
       },
+      "cosmosDbCollectionName": {
+        "value": "a-test-collection"
+      },
       "appSharedStorageAccountName": {
         "value": "dfcdevappsharedstr"
       },

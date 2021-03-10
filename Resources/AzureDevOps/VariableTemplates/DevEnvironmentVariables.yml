@@ -21,3 +21,5 @@ variables:
   value: 75
 - name: EnableAzureMonitorAlerting
   value: true
+- name: cosmosDbCollectionName
+  value: job-groups
