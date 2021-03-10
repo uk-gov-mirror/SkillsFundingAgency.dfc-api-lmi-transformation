@@ -196,6 +196,70 @@
               {
                 "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
                 "value": "[reference(variables('functionAppInsightsName')).outputs.InstrumentationKey.value]"
+              },
+              {
+                "name": "ApiSuffix",
+                "value": "[if(contains(variables('resourcePrefix'),'draft'),'draft','')]"
+              },
+              {
+                "name": "Configuration__CosmosDbConnections__LmiTransformation__AccessKey",
+                "value": "[parameters('cosmosDbKey')]"
+              },
+              {
+                "name": "Configuration__CosmosDbConnections__LmiTransformation__EndpointUrl",
+                "value": "[variables('cosmosDbEndpoint')]"
+              },
+              {
+                "name": "Configuration__CosmosDbConnections__LmiTransformation__DatabaseId",
+                "value": "[variables('cosmosDbDatabaseName')]"
+              },
+              {
+                "name": "Configuration__CosmosDbConnections__LmiTransformation__CollectionId",
+                "value": "[parameters('cosmosJobGroupDbCollectionName')]"
+              },
+              {
+                "name": "Configuration__CosmosDbConnections__LmiTransformation__PartitionKey",
+                "value": "[variables('cosmosDbCollectionPartitionKey')]"
+              },
+              {
+                "name": "Configuration__CosmosDbConnections__LmiTemp__AccessKey",
+                "value": "[parameters('cosmosDbKey')]"
+              },
+              {
+                "name": "Configuration__CosmosDbConnections__LmiTemp__EndpointUrl",
+                "value": "[variables('cosmosDbEndpoint')]"
+              },
+              {
+                "name": "Configuration__CosmosDbConnections__LmiTemp__DatabaseId",
+                "value": "[variables('cosmosDbDatabaseName')]"
+              },
+              {
+                "name": "Configuration__CosmosDbConnections__LmiTemp__CollectionId",
+                "value": "[parameters('cosmosJobGroupTempDbCollectionName')]"
+              },
+              {
+                "name": "Configuration__CosmosDbConnections__LmiTemp__PartitionKey",
+                "value": "[variables('cosmosDbCollectionPartitionKey')]"
+              },
+              {
+                "name": "Configuration__CosmosDbConnections__LmiDifferences__AccessKey",
+                "value": "[parameters('cosmosDbKey')]"
+              },
+              {
+                "name": "Configuration__CosmosDbConnections__LmiDifferences__EndpointUrl",
+                "value": "[variables('cosmosDbEndpoint')]"
+              },
+              {
+                "name": "Configuration__CosmosDbConnections__LmiDifferences__DatabaseId",
+                "value": "[variables('cosmosDbDatabaseName')]"
+              },
+              {
+                "name": "Configuration__CosmosDbConnections__LmiDifferences__CollectionId",
+                "value": "[parameters('cosmosJobGroupDiffDbCollectionName')]"
+              },
+              {
+                "name": "Configuration__CosmosDbConnections__LmiDifferences__PartitionKey",
+                "value": "[variables('cosmosDbCollectionPartitionKey')]"
               }
             ]
           }
