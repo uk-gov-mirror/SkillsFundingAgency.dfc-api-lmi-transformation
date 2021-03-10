@@ -1,4 +1,4 @@
-parameters:
+arameters:
   AzureSubscription: ''
   SetEsfaResourceGroupTagsScript: 'https://raw.githubusercontent.com/SkillsFundingAgency/dfc-devops/master/PSScripts/Set-EsfaResourceGroupTags.ps1'
   PackageFile:  ''
@@ -9,17 +9,24 @@ parameters:
   ParentBusiness: ''
   ServiceOffering: ''
   ResourceGroup: ''
-  FunctionAppDomain: ''
+  DfCDevopsPath: ''
   EnvironmentName: ''
-  # The 'Apis' parameter is a bit special here - it requires a structured, complex parameter:  an array of arrays of objects
-  # Below is a simple example of what it expects:
-  # - 
-  #   - name: anItem
-  #     value: someValue
-  # -
-  #   - name: anotherItem
-  #     value: aDifferentValue
-  Apis: []
+  AppSharedResourceGroup: ''
+  appSharedCosmosDBName: ''
+  PageRegistrationDirectory: ''
+  PageRegistrationPath: ''
+  PageRegistrationFile: ''
+  AppRegistryApiUrl: ''
+  ApimCompositeKey: ''
+  AppServiceName: ''
+  SharedResourceGroupName: ''
+  ApimServiceName: ''
+  ApimProductInstanceName: ''
+  ApiName: ''
+  ApiId: ''
+  APIMPolicyPath: ''
+  ApimImportScript: ''
+  SpecificationPath: ''
 
 jobs:
 - deployment: DeployTemplate
@@ -32,6 +39,7 @@ jobs:
         - template: ../StepTemplates/deploy-arm-template.yml
           parameters: 
             AzureSubscription: '${{ parameters.AzureSubscription }}'
+            DfCDevopsPath: '${{ parameters.DfCDevopsPath }}'
             SetEsfaResourceGroupTagsScript: '${{ parameters.SetEsfaResourceGroupTagsScript }}'
             EnvironmentTag: '${{ parameters.EnvironmentTag }}'
             ParentBusiness: '${{ parameters.ParentBusiness }}'
@@ -40,3 +48,5 @@ jobs:
             Location: '${{ parameters.Location }}'
             ArmOutputVariableName: '${{ parameters.ArmOutputVariableName }}'
             ArmTemplateFolder: '${{ parameters.ArmTemplateFolder }}'
+            AppSharedResourceGroup: '${{ parameters.AppSharedResourceGroup }}'
+            appSharedCosmosDBName: '${{ parameters.appSharedCosmosDBName }}'
