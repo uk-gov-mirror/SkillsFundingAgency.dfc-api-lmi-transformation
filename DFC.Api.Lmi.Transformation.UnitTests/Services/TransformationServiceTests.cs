@@ -75,9 +75,8 @@ namespace DFC.Api.Lmi.Transformation.UnitTests.Services
         public async Task TransformationServiceTransformReturnsNoSummaries()
         {
             // Arrange
-            const int collectionCount = 0;
-            const HttpStatusCode expectedResult = HttpStatusCode.OK;
-            var noModels = A.CollectionOfDummy<SummaryItem>(collectionCount);
+            const HttpStatusCode expectedResult = HttpStatusCode.NoContent;
+            var noModels = A.CollectionOfDummy<SummaryItem>(0);
 
             A.CallTo(() => fakeCmsApiService.GetSummaryAsync<SummaryItem>()).Returns(noModels);
 
@@ -99,7 +98,7 @@ namespace DFC.Api.Lmi.Transformation.UnitTests.Services
         public async Task TransformationServiceTransformReturnsNullForSummaries()
         {
             // Arrange
-            const HttpStatusCode expectedResult = HttpStatusCode.OK;
+            const HttpStatusCode expectedResult = HttpStatusCode.NoContent;
             IList<SummaryItem>? nullModels = default;
 
             A.CallTo(() => fakeCmsApiService.GetSummaryAsync<SummaryItem>()).Returns(nullModels);

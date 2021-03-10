@@ -61,22 +61,24 @@ namespace DFC.Api.Lmi.Transformation.Services
                 {
                     await TransformItemAsync(item.Url!).ConfigureAwait(false);
                 }
+
+                var eventGridEventData = new EventGridEventData
+                {
+                    ItemId = Guid.NewGuid().ToString(),
+                    Api = $"{eventGridClientOptions.ApiEndpoint}",
+                    DisplayText = "LMI transformed into job-groups",
+                    VersionId = Guid.NewGuid().ToString(),
+                    Author = eventGridClientOptions.SubjectPrefix,
+                };
+
+                await eventGridService.SendEventAsync(WebhookCacheOperation.CreateOrUpdate, eventGridEventData, eventGridClientOptions.SubjectPrefix).ConfigureAwait(false);
+
+                logger.LogInformation($"Refreshed all Job Groups from Summary list");
+
+                return HttpStatusCode.OK;
             }
 
-            var eventGridEventData = new EventGridEventData
-            {
-                ItemId = Guid.NewGuid().ToString(),
-                Api = $"{eventGridClientOptions.ApiEndpoint}",
-                DisplayText = "LMI transformed into job-groups",
-                VersionId = Guid.NewGuid().ToString(),
-                Author = eventGridClientOptions.SubjectPrefix,
-            };
-
-            await eventGridService.SendEventAsync(WebhookCacheOperation.CreateOrUpdate, eventGridEventData, eventGridClientOptions.SubjectPrefix).ConfigureAwait(false);
-
-            logger.LogInformation($"Refreshed all Job Groups from Summary list");
-
-            return HttpStatusCode.OK;
+            return HttpStatusCode.NoContent;
         }
 
         public async Task<HttpStatusCode> TransformItemAsync(Uri url)
