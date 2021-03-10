@@ -1,4 +1,4 @@
-arameters:
+parameters:
   AzureSubscription: ''
   SetEsfaResourceGroupTagsScript: 'https://raw.githubusercontent.com/SkillsFundingAgency/dfc-devops/master/PSScripts/Set-EsfaResourceGroupTags.ps1'
   PackageFile:  ''
