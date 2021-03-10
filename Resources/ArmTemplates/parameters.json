@@ -1,0 +1,48 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "Neo4jUrl": {
+        "value": "__Neo4jUrlVisits__"
+      },
+      "Neo4jUser": {
+        "value": "__Neo4jUserVisits__"
+      },
+      "Neo4jPassword": {
+        "value": "__Neo4jPasswordVisits__"
+      },
+      "appSharedStorageAccountName": {
+        "value": "__appSharedStorageAccountName__"
+      },
+      "appSharedResourceGroup": {
+        "value": "__appSharedResourceGroup__"
+      },
+      "aspTier": {
+        "value": "__aspTier__"
+      },
+      "aseHostingEnvironmentName": {
+        "value": "__AseServiceName__"
+      },
+      "aseResourceGroup": {
+        "value": "__aseResourceGroup__"
+      },
+      "FunctionAppInsightName": {
+        "value": "__FunctionAppInsightName__"
+      },
+      "aspSize": {
+        "value": "__aspSize__"
+      },
+      "aspInstances": {
+        "value": __aspInstances__
+      },
+      "environment": {
+        "value": "__ReleaseEnvironmentName__",
+        "metadata": {
+            "comment": "Bug in tokenisation task prevents referencing Release.EnvironmentName directly.  https://github.com/TotalALM/VSTS-Tasks/issues/29"
+        }
+      },
+      "FunctionAppName": {
+        "value": "__FunctionAppName__"
+      }
+    }
+  }
