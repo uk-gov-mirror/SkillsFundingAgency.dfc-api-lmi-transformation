@@ -30,7 +30,7 @@ parameters:
 
 jobs:
 - deployment: DeployTemplate
-  displayName: "Deploy arm templates"
+  displayName: "Deploy ARM Templates"
   environment: ${{ parameters.EnvironmentName }}
   strategy:
     runOnce:
