@@ -28,6 +28,7 @@ namespace DFC.Api.Lmi.Transformation.Functions
         }
 
         [FunctionName("LmiWebhook")]
+        [Timeout("04:00:00")]
         [Display(Name = "LMI Webhook", Description = "Receives webhook Post requests for LMI refresh.")]
         [Response(HttpStatusCode = (int)HttpStatusCode.OK, Description = "Page processed", ShowSchema = false)]
         [Response(HttpStatusCode = (int)HttpStatusCode.BadRequest, Description = "Invalid request data", ShowSchema = false)]
