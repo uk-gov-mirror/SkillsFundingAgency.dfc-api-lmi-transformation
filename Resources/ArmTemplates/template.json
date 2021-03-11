@@ -81,6 +81,27 @@
     },
     "SubscriptionSettingsEndpoint": {
       "type": "string"
+    },
+    "subscriptionUrl": {
+      "type": "string",
+      "metadata": {
+        "description": "subscriptionUrl"
+      }
+    },
+    "apimCompositeApiKey": {
+      "type": "securestring"
+    },
+    "EventGridAegSasKey": {
+      "type": "securestring"
+    },
+    "EventGridTopicUrl": {
+      "type": "string"
+    },
+    "EventGridPublishClientOptionsApiEndpoint": {
+      "type": "securestring"
+    },
+    "EventGridSubjectPrefix": {
+      "type": "securestring"
     }
   },
   "variables": {
@@ -278,6 +299,38 @@
               {
                 "name": "SubscriptionSettings__Endpoint",
                 "value": "[concat(parameters('SubscriptionSettingsEndpoint'),'/lmi/webhook')]"
+              },
+              {
+                "name": "SubscriptionSettings__SubscriptionServiceEndpoint",
+                "value": "[parameters('subscriptionUrl')]"
+              },
+              {
+                "name": "SubscriptionSettings__ApiKey",
+                "value": "[parameters('apimCompositeApiKey')]"
+              },
+              {
+                "name": "SubscriptionSettings__Filter__BeginsWith",
+                "value": "/dfc-api-lmi-import/"
+              },
+              {
+                "name": "SubscriptionSettings__Filter__IncludeEventTypes__0",
+                "value": "[if(contains(variables('resourcePrefix'),'draft'),'draft','published')]"
+              },
+              {
+                "name": "EventGridClientOptions__TopicKey",
+                "value": "[parameters('EventGridAegSasKey')]"
+              },
+              {
+                "name": "EventGridClientOptions__TopicEndpoint",
+                "value": "[parameters('EventGridTopicUrl')]"
+              },
+              {
+                "name": "EventGridClientOptions__SubjectPrefix",
+                "value": "[parameters('EventGridSubjectPrefix')]"
+              },
+              {
+                "name": "EventGridClientOptions__ApiEndpoint",
+                "value": "[parameters('EventGridPublishClientOptionsApiEndpoint')]"
               }
             ]
           }

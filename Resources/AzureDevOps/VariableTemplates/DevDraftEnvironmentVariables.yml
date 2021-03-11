@@ -30,4 +30,14 @@ variables:
 - name: contentUrl
   value: $(ContentApiDraftAddress)/api/execute
 - name: SubscriptionSettingsEndpoint
-  value: https://$(WebAppPrefix)-fa.azurewebsites.net
+  value: https://$(AppServiceName).$(appServiceDomain)
+- name: subscriptionUrl
+  value: https://dfc-dev-api-eventgridsubscriptions-fa.$(appServiceDomain)
+- name: EventGridPublishClientOptionsApiEndpoint
+  value: https://$(AppServiceName).$(appServiceDomain)/api/execute/lmisoc
+- name: EventGridSubjectPrefix
+  value: /$(ApplicationName)/
+- name: AppServiceName
+  value: $(WebAppPrefix)-fa
+- name: ApplicationName
+  value: dfc-api-lmi-transformation

@@ -36,13 +36,13 @@
         "value": "cosmosDB"
       },
       "cosmosJobGroupDbCollectionName": {
-        "value": "__cosmosJobGroupDbCollectionName__"
+        "value": "cosmosJobGroupDbCollectionName"
       },
       "cosmosJobGroupTempDbCollectionName": {
-        "value": "__cosmosJobGroupTempDbCollectionName__"
+        "value": "cosmosJobGroupTempDbCollectionName"
       },
       "cosmosJobGroupDiffDbCollectionName": {
-        "value": "__cosmosJobGroupDiffDbCollectionName__"
+        "value": "cosmosJobGroupDiffDbCollectionName"
       },
       "appSharedStorageAccountName": {
         "value": "dfcdevappsharedstr"
@@ -61,6 +61,24 @@
       },
       "SubscriptionSettingsEndpoint": {
         "value": "SubscriptionSettingsEndpoint"
+      },
+      "subscriptionUrl":{
+        "value": "subscriptionUrl"
+      },
+      "apimCompositeApiKey": {
+          "value": "apimCompositeKey"
+      },
+      "EventGridAegSasKey": {
+          "value": "EventGridAegSasKey"
+      },
+      "EventGridTopicUrl": {
+          "value": "EventGridTopicUrl"
+      },
+      "EventGridPublishClientOptionsApiEndpoint": {
+          "value": "EventGridPublishClientOptionsApiEndpoint"
+      },
+      "EventGridSubjectPrefix": {
+          "value": "EventGridSubjectPrefix"
       }
     }
   }
