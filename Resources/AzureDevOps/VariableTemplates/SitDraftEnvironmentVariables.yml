@@ -48,4 +48,4 @@ variables:
 - name: apimApiName
   value: Transformation-draft
 - name: SubscriptionPosturi
-  value: https://$(FunctionAppName).$(FunctionAppDomain)/subscription/ 
+  value: https://$(FunctionAppName).$(FunctionAppDomain)/api/subscription
