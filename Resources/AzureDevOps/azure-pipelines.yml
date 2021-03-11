@@ -85,7 +85,7 @@ stages:
       PageRegistrationFile: "$(PageRegistrationFile)"
       AppRegistryApiUrl: "$(AppRegistryApiUrl)"
       ApimCompositeKey: "$(ApimCompositeKey)"
-      AppServiceName: '$(AppServiceName)'
+      AppServiceName: '$(FunctionAppName)'
       AppRegistryClientOptionsBaseAddress: $(AppRegistryClientOptionsBaseAddress)
       ApimLoggerName: "$(ApimLoggerName)"
       ApimProductName: "$(ApimProductName)"
@@ -136,7 +136,7 @@ stages:
       PageRegistrationFile: "$(PageRegistrationFile)"
       AppRegistryApiUrl: "$(AppRegistryApiUrl)"
       ApimCompositeKey: "$(ApimCompositeKey)"
-      AppServiceName: '$(AppServiceName)'
+      AppServiceName: '$(FunctionAppName)'
       AppRegistryClientOptionsBaseAddress: $(AppRegistryClientOptionsBaseAddress)
       ApimLoggerName: "$(ApimLoggerName)"
       ApimProductName: "$(ApimProductName)"
@@ -187,7 +187,7 @@ stages:
       PageRegistrationFile: "$(PageRegistrationFile)"
       AppRegistryApiUrl: "$(AppRegistryApiUrl)"
       ApimCompositeKey: "$(ApimCompositeKey)"
-      AppServiceName: '$(AppServiceName)'
+      AppServiceName: '$(FunctionAppName)'
       AppRegistryClientOptionsBaseAddress: $(AppRegistryClientOptionsBaseAddress)
       ApimLoggerName: "$(ApimLoggerName)"
       ApimProductName: "$(ApimProductName)"
@@ -238,7 +238,7 @@ stages:
       PageRegistrationFile: "$(PageRegistrationFile)"
       AppRegistryApiUrl: "$(AppRegistryApiUrl)"
       ApimCompositeKey: "$(ApimCompositeKey)"
-      AppServiceName: '$(AppServiceName)'
+      AppServiceName: '$(FunctionAppName)'
       AppRegistryClientOptionsBaseAddress: $(AppRegistryClientOptionsBaseAddress)
       ApimLoggerName: "$(ApimLoggerName)"
       ApimProductName: "$(ApimProductName)"
