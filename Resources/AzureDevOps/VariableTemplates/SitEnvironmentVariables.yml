@@ -1,23 +1,33 @@
 variables:
 - name: ReleaseEnvironmentName
   value: SIT
-- name: FunctionalTestsSqlDatabaseConnStr
-  value: 'Server=tcp:$(sharedSqlServerName).database.windows.net,1433;Initial Catalog=$(SqlDatabaseName);Persist Security Info=False;User ID=$(FunctionalTestsUser);Password=$(FunctionalTestsUserPassword);MultipleActiveResultSets=True;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;'
-- name: DfcVisitsTestsBuildId
-  value: 1
 - name: WebAppPrefix
-  value: dfc-sit
-- name: FunctionAppInsightName
-  value: $(WebAppPrefix)-api-visits-ai
-- name: FunctionAppName
-  value: $(WebAppPrefix)-api-visits-fa
+  value: dfc-sit-api-lmi-transformation
 - name: ResourceGroup
-  value: $(WebAppPrefix)-api-visits-rg
-- name: appServicePlanName
-  value: $(WebAppPrefix)-api-visits-asp
+  value: $(WebAppPrefix)-rg
 - name: aspTier
   value: Standard
 - name: aspInstances
   value: 2
 - name: aspSize
   value: 2
+- name: lmiTransformationAppDatabaseThroughput
+  value: 400
+- name: ExceptionCountThreshold
+  value: 10
+- name: MemoryPercentageThreshold
+  value: 75
+- name: CPUPercentageThreshold
+  value: 75
+- name: EnableAzureMonitorAlerting
+  value: true
+- name: cosmosJobGroupDbCollectionName
+  value: job-groups
+- name: cosmosJobGroupTempDbCollectionName
+  value: job-groups-temp
+- name: cosmosJobGroupDiffDbCollectionName
+  value: job-groups-differences
+- name: contentUrl
+  value: $(ContentApiAddress)/api/execute
+- name: SubscriptionSettingsEndpoint
+  value: https://$(WebAppPrefix)-fa.azurewebsites.net

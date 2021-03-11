@@ -1,8 +1,8 @@
 variables:
 - name: ReleaseEnvironmentName
-  value: DEV
+  value: SIT-DRAFT
 - name: WebAppPrefix
-  value: dfc-dev-api-lmi-transformation
+  value: dfc-sit-draft-api-lmi-transformation
 - name: ResourceGroup
   value: $(WebAppPrefix)-rg
 - name: aspTier
@@ -22,12 +22,12 @@ variables:
 - name: EnableAzureMonitorAlerting
   value: true
 - name: cosmosJobGroupDbCollectionName
-  value: job-groups
+  value: job-groups-draft
 - name: cosmosJobGroupTempDbCollectionName
-  value: job-groups-temp
+  value: job-groups-temp-draft
 - name: cosmosJobGroupDiffDbCollectionName
-  value: job-groups-differences
+  value: job-groups-differences-draft
 - name: contentUrl
-  value: $(ContentApiAddress)/api/execute
+  value: $(ContentApiDraftAddress)/api/execute
 - name: SubscriptionSettingsEndpoint
   value: https://$(WebAppPrefix)-fa.azurewebsites.net

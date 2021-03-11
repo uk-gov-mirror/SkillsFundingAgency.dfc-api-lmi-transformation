@@ -64,6 +64,12 @@
       },
       "CPUPercentageThreshold": {
           "value": "__CPUPercentageThreshold__"
+      },
+      "contentUrl": {
+        "value": "__contentUrl__"
+      },
+      "SubscriptionSettingsEndpoint": {
+        "value": "__SubscriptionSettingsEndpoint__"
       }
     }
   }

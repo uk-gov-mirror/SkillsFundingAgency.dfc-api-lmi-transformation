@@ -75,6 +75,12 @@
       "metadata": {
         "description": "The name of the collection to create"
       }
+    },
+    "contentUrl": {
+      "type": "string"
+    },
+    "SubscriptionSettingsEndpoint": {
+      "type": "string"
     }
   },
   "variables": {
@@ -260,6 +266,18 @@
               {
                 "name": "Configuration__CosmosDbConnections__LmiDifferences__PartitionKey",
                 "value": "[variables('cosmosDbCollectionPartitionKey')]"
+              },
+              {
+                "name": "CmsApiClientOptions__BaseAddress",
+                "value": "[parameters('contentUrl')]"
+              },
+              {
+                "name": "CmsApiClientOptions__SummaryEndpoint",
+                "value": "lmisoc"
+              },
+              {
+                "name": "SubscriptionSettings__Endpoint",
+                "value": "[concat(parameters('SubscriptionSettingsEndpoint'),'/lmi/webhook')]"
               }
             ]
           }
@@ -333,7 +351,7 @@
         "[variables('CosmosDbDatabaseName')]"
       ]
     },
-        {
+    {
       "apiVersion": "2017-05-10",
       "name": "[parameters('cosmosJobGroupTempDbCollectionName')]",
       "type": "Microsoft.Resources/deployments",
@@ -365,7 +383,8 @@
       "dependsOn": [
         "[variables('CosmosDbDatabaseName')]"
       ]
-    },    {
+    },
+    {
       "apiVersion": "2017-05-10",
       "name": "[parameters('cosmosJobGroupDiffDbCollectionName')]",
       "type": "Microsoft.Resources/deployments",

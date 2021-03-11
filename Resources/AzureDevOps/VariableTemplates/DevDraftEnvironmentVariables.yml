@@ -27,3 +27,7 @@ variables:
   value: job-groups-temp-draft
 - name: cosmosJobGroupDiffDbCollectionName
   value: job-groups-differences-draft
+- name: contentUrl
+  value: $(ContentApiDraftAddress)/api/execute
+- name: SubscriptionSettingsEndpoint
+  value: https://$(WebAppPrefix)-fa.azurewebsites.net
