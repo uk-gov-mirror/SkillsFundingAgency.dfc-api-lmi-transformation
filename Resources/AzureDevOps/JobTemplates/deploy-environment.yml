@@ -31,6 +31,7 @@ parameters:
   ApimImportScript: ''
   SpecificationPath: ''
   ApimApiName: ''
+  SubscriptionPosturi: ''
   Apis: []
 
 jobs:
@@ -78,3 +79,4 @@ jobs:
                 ApimServiceName: '${{ parameters.ApimServiceName }}'
                 APIMProductName: '${{ parameters.ApimProductName }}'
                 APIMApiName: '${{ parameters.ApimApiName }}'
+                SubscriptionPosturi: '${{ parameters.SubscriptionPosturi }}'
