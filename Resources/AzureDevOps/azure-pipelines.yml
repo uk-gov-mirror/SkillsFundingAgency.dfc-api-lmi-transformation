@@ -132,3 +132,91 @@ stages:
       APIMPolicyPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.ApimPolicies/"
       ApimImportScript: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.Scripts/Import-ApimOpenApiDefinitionFromFile.ps1"
       SpecificationPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.OpenApiDocs"
+
+- stage: DeployToSitLmiTransformation
+  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+  displayName: Deploy to SIT_LMI_TRANSFORMATIONS
+  variables:
+  - group: dfc-shared-all
+  - group: dfc-shared-sit
+  - group: dfc-app-shared-all
+  - group: dfc-app-shared-sit
+  - group: dfc-app-shared-registration
+  - group: dfc-stax-shared-sit
+  - group: dfc-compositeui-all
+  - template: VariableTemplates\SitEnvironmentVariables.yml
+  
+  jobs:
+  - template: JobTemplates/deploy-environment.yml
+    parameters:
+      AzureSubscription: 'SFA-CDH-Dev/Test (962cae10-2950-412a-93e3-d8ae92b17896)'
+      EnvironmentTag: '$(EnvironmentTag)'
+      ParentBusiness: '$(ParentBusiness)'
+      ServiceOffering: '$(ServiceOffering)'
+      ResourceGroup: $(ResourceGroup)
+      DfCDevopsPath: '$(Agent.BuildDirectory)/s/dfc-devops'
+      PackageFile:  "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.DeploymentPackages/${{ variables.SolutionBaseName }}.zip"
+      ArmTemplateFolder: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.Resources.ArmTemplates/"
+      EnvironmentName: SIT_LMI_TRANSFORMATIONS
+      AppSharedResourceGroup: $(AppSharedResourceGroup)
+      appSharedCosmosDBName: $(appSharedCosmosDBName)
+      PageRegistrationPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.PageRegistrations/"
+      PageRegistrationFile: "$(PageRegistrationFile)"
+      AppRegistryApiUrl: "$(AppRegistryApiUrl)"
+      ApimCompositeKey: "$(ApimCompositeKey)"
+      AppServiceName: '$(AppServiceName)'
+      AppRegistryClientOptionsBaseAddress: $(AppRegistryClientOptionsBaseAddress)
+      SharedResourceGroupName: $(SharedResourceGroupName)
+      ApimServiceName: $(ApimServiceName)
+      ApimProductInstanceName: $(ApimProductInstanceName)
+      ApiName: $(ApiName)
+      ApiId: $(ApiId)
+      FunctionAppDomain: $(FunctionAppDomain)
+      ApiDefinitionPath: $(ApiDefinitionPath)
+      APIMPolicyPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.ApimPolicies/"
+      ApimImportScript: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.Scripts/Import-ApimOpenApiDefinitionFromFile.ps1"
+      SpecificationPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.OpenApiDocs"
+
+- stage: DeployToSitDraftLmiTransformation
+  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+  displayName: Deploy to SIT-DRAFT_LMI_TRANSFORMATIONS
+  variables:
+  - group: dfc-shared-all
+  - group: dfc-shared-sit
+  - group: dfc-app-shared-all
+  - group: dfc-app-shared-sit
+  - group: dfc-app-shared-registration
+  - group: dfc-stax-shared-sit
+  - group: dfc-compositeui-all
+  - template: VariableTemplates\SitDraftEnvironmentVariables.yml
+  
+  jobs:
+  - template: JobTemplates/deploy-environment.yml
+    parameters:
+      AzureSubscription: 'SFA-CDH-Dev/Test (962cae10-2950-412a-93e3-d8ae92b17896)'
+      EnvironmentTag: '$(EnvironmentTag)'
+      ParentBusiness: '$(ParentBusiness)'
+      ServiceOffering: '$(ServiceOffering)'
+      ResourceGroup: $(ResourceGroup)
+      DfCDevopsPath: '$(Agent.BuildDirectory)/s/dfc-devops'
+      PackageFile:  "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.DeploymentPackages/${{ variables.SolutionBaseName }}.zip"
+      ArmTemplateFolder: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.Resources.ArmTemplates/"
+      EnvironmentName: SIT-DRAFT_LMI_TRANSFORMATIONS
+      AppSharedResourceGroup: $(AppSharedResourceGroup)
+      appSharedCosmosDBName: $(appSharedCosmosDBName)
+      PageRegistrationPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.PageRegistrations/"
+      PageRegistrationFile: "$(PageRegistrationFile)"
+      AppRegistryApiUrl: "$(AppRegistryApiUrl)"
+      ApimCompositeKey: "$(ApimCompositeKey)"
+      AppServiceName: '$(AppServiceName)'
+      AppRegistryClientOptionsBaseAddress: $(AppRegistryClientOptionsBaseAddress)
+      SharedResourceGroupName: $(SharedResourceGroupName)
+      ApimServiceName: $(ApimServiceName)
+      ApimProductInstanceName: $(ApimProductInstanceName)
+      ApiName: $(ApiName)
+      ApiId: $(ApiId)
+      FunctionAppDomain: $(FunctionAppDomain)
+      ApiDefinitionPath: $(ApiDefinitionPath)
+      APIMPolicyPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.ApimPolicies/"
+      ApimImportScript: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.Scripts/Import-ApimOpenApiDefinitionFromFile.ps1"
+      SpecificationPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.OpenApiDocs"
