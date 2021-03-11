@@ -40,7 +40,6 @@ namespace DFC.Api.Lmi.Transformation.Startup
 
             var cosmosDbConnection = configuration.GetSection(CosmosDbLmiTransformationConfigAppSettings).Get<CosmosDbConnection>();
 
-            builder.Services.AddSingleton(configuration.GetSection(nameof(CmsApiClientOptions)).Get<CmsApiClientOptions>() ?? new CmsApiClientOptions());
             builder.Services.AddSingleton(configuration.GetSection(nameof(EventGridClientOptions)).Get<EventGridClientOptions>() ?? new EventGridClientOptions());
 
             builder.AddSwashBuckle(Assembly.GetExecutingAssembly());
