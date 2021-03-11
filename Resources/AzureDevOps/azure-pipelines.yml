@@ -103,7 +103,7 @@ stages:
       SubscriptionPosturi: '$(SubscriptionPosturi)'
       Apis:
         -
-          - azureFunctionName: '${{ variables.AppServiceName }}'
+          - azureFunctionName: '${{ variables.FunctionAppName }}'
 
 - stage: DeployToDevDraftLmiTransformation
   condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
@@ -154,7 +154,7 @@ stages:
       ApimApiName: $(ApimApiName)
       Apis:
         -
-          - azureFunctionName: '${{ variables.AppServiceName }}'
+          - azureFunctionName: '${{ variables.FunctionAppName }}'
 
 - stage: DeployToSitLmiTransformation
   condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
@@ -205,7 +205,7 @@ stages:
       ApimApiName: $(ApimApiName)
       Apis:
         -
-          - azureFunctionName: '${{ variables.AppServiceName }}'
+          - azureFunctionName: '${{ variables.FunctionAppName }}'
 
 - stage: DeployToSitDraftLmiTransformation
   condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
@@ -256,4 +256,4 @@ stages:
       ApimApiName: $(ApimApiName)
       Apis:
         -
-          - azureFunctionName: '${{ variables.AppServiceName }}'
+          - azureFunctionName: '${{ variables.FunctionAppName }}'
