@@ -4,6 +4,10 @@ parameters:
   ResourceGroup: ''
   FunctionAppDomain: ''
   PackageFile: ''
+  SharedResourceGroup: ''
+  ApimServiceName: ''
+  ApimProductName: ''
+  ApimApiName: ''
 
 steps:
 - checkout: dfc-devops
@@ -51,3 +55,11 @@ steps:
 - powershell: |
     Write-Host "##vso[task.setvariable variable=FunctionAppUrl]https://${{ parameters.WebAppName }}.${{ parameters.FunctionAppDomain }}"
   displayName: "Set full hostname as variable"
+
+- task: AzurePowerShell@4
+  displayName: 'Import OpenAPI specification'
+  inputs:
+    azureSubscription: '${{ parameters.AzureSubscription }}'
+    ScriptPath: '$(Agent.BuildDirectory)/s/dfc-devops//PSCoreScripts/Import-ApimSwaggerApiDefinition.ps1'
+    ScriptArguments: ' -ApimResourceGroup ${{ parameters.SharedResourceGroup }} -InstanceName ${{ parameters.ApimServiceName }} -ApiName ${{ parameters.ApimProductName }}-${{ parameters.ApimApiName }} -ApiPath ${{ parameters.ApimProductName }}-${{ parameters.ApimApiName }} -SwaggerSpecificationUrl https://${{ parameters.WebAppName }}.${{ parameters.FunctionAppDomain }}/swagger/json -OutputFilePath $(Agent.BuildDirectory)/SwaggerFile -Verbose'
+    azurePowerShellVersion: LatestVersion

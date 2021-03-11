@@ -9,6 +9,7 @@ parameters:
   ParentBusiness: ''
   ServiceOffering: ''
   ResourceGroup: ''
+  FunctionAppDomain: ''
   DfCDevopsPath: ''
   EnvironmentName: ''
   AppSharedResourceGroup: ''
@@ -19,14 +20,18 @@ parameters:
   AppRegistryApiUrl: ''
   ApimCompositeKey: ''
   AppServiceName: ''
-  SharedResourceGroupName: ''
+  SharedResourceGroup: ''
   ApimServiceName: ''
   ApimProductInstanceName: ''
   ApiName: ''
   ApiId: ''
+  ApimLoggerName: ''
+  ApimProductName: ''
   APIMPolicyPath: ''
   ApimImportScript: ''
   SpecificationPath: ''
+  ApimApiName: ''
+  Apis: []
 
 jobs:
 - deployment: DeployTemplate
@@ -50,3 +55,26 @@ jobs:
             ArmTemplateFolder: '${{ parameters.ArmTemplateFolder }}'
             AppSharedResourceGroup: '${{ parameters.AppSharedResourceGroup }}'
             appSharedCosmosDBName: '${{ parameters.appSharedCosmosDBName }}'
+
+- ${{ each apiPartition in parameters.Apis }}:
+  - ${{ each api in apiPartition }}:
+    - deployment: Deploy${{ api.name }}
+      displayName: "Deploy ${{ api.name }}"
+      environment: ${{ parameters.EnvironmentName }}
+      dependsOn: 
+      - DeployTemplate
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+            - template: ../StepTemplates/deploy-azure-function.yml
+              parameters:
+                WebAppName: '${{ api.azureFunctionName }}'
+                AzureSubscription: '${{ parameters.AzureSubscription }}'
+                FunctionAppDomain: '${{ parameters.FunctionAppDomain }}'
+                PackageFile: '${{ parameters.PackageFile }}'
+                ResourceGroup: '${{ parameters.ResourceGroup }}'
+                SharedResourceGroup: '${{ parameters.SharedResourceGroup }}'
+                ApimServiceName: '${{ parameters.ApimServiceName }}'
+                APIMProductName: '${{ parameters.ApimProductName }}'
+                APIMApiName: '${{ parameters.ApimApiName }}'

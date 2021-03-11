@@ -78,7 +78,9 @@ stages:
       ApimCompositeKey: "$(ApimCompositeKey)"
       AppServiceName: '$(AppServiceName)'
       AppRegistryClientOptionsBaseAddress: $(AppRegistryClientOptionsBaseAddress)
-      SharedResourceGroupName: $(SharedResourceGroupName)
+      ApimLoggerName: "$(ApimLoggerName)"
+      ApimProductName: "$(ApimProductName)"
+      SharedResourceGroup: $(SharedResourceGroup)
       ApimServiceName: $(ApimServiceName)
       ApimProductInstanceName: $(ApimProductInstanceName)
       ApiName: $(ApiName)
@@ -88,6 +90,10 @@ stages:
       APIMPolicyPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.ApimPolicies/"
       ApimImportScript: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.Scripts/Import-ApimOpenApiDefinitionFromFile.ps1"
       SpecificationPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.OpenApiDocs"
+      ApimApiName: $(ApimApiName)
+      Apis:
+        -
+          - azureFunctionName: '${{ variables.AppServiceName }}'
 
 - stage: DeployToDevDraftLmiTransformation
   condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
@@ -122,7 +128,9 @@ stages:
       ApimCompositeKey: "$(ApimCompositeKey)"
       AppServiceName: '$(AppServiceName)'
       AppRegistryClientOptionsBaseAddress: $(AppRegistryClientOptionsBaseAddress)
-      SharedResourceGroupName: $(SharedResourceGroupName)
+      ApimLoggerName: "$(ApimLoggerName)"
+      ApimProductName: "$(ApimProductName)"
+      SharedResourceGroup: $(SharedResourceGroup)
       ApimServiceName: $(ApimServiceName)
       ApimProductInstanceName: $(ApimProductInstanceName)
       ApiName: $(ApiName)
@@ -132,6 +140,10 @@ stages:
       APIMPolicyPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.ApimPolicies/"
       ApimImportScript: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.Scripts/Import-ApimOpenApiDefinitionFromFile.ps1"
       SpecificationPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.OpenApiDocs"
+      ApimApiName: $(ApimApiName)
+      Apis:
+        -
+          - azureFunctionName: '${{ variables.AppServiceName }}'
 
 - stage: DeployToSitLmiTransformation
   condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
@@ -166,7 +178,9 @@ stages:
       ApimCompositeKey: "$(ApimCompositeKey)"
       AppServiceName: '$(AppServiceName)'
       AppRegistryClientOptionsBaseAddress: $(AppRegistryClientOptionsBaseAddress)
-      SharedResourceGroupName: $(SharedResourceGroupName)
+      ApimLoggerName: "$(ApimLoggerName)"
+      ApimProductName: "$(ApimProductName)"
+      SharedResourceGroup: $(SharedResourceGroup)
       ApimServiceName: $(ApimServiceName)
       ApimProductInstanceName: $(ApimProductInstanceName)
       ApiName: $(ApiName)
@@ -176,6 +190,10 @@ stages:
       APIMPolicyPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.ApimPolicies/"
       ApimImportScript: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.Scripts/Import-ApimOpenApiDefinitionFromFile.ps1"
       SpecificationPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.OpenApiDocs"
+      ApimApiName: $(ApimApiName)
+      Apis:
+        -
+          - azureFunctionName: '${{ variables.AppServiceName }}'
 
 - stage: DeployToSitDraftLmiTransformation
   condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
@@ -210,7 +228,9 @@ stages:
       ApimCompositeKey: "$(ApimCompositeKey)"
       AppServiceName: '$(AppServiceName)'
       AppRegistryClientOptionsBaseAddress: $(AppRegistryClientOptionsBaseAddress)
-      SharedResourceGroupName: $(SharedResourceGroupName)
+      ApimLoggerName: "$(ApimLoggerName)"
+      ApimProductName: "$(ApimProductName)"
+      SharedResourceGroup: $(SharedResourceGroup)
       ApimServiceName: $(ApimServiceName)
       ApimProductInstanceName: $(ApimProductInstanceName)
       ApiName: $(ApiName)
@@ -220,3 +240,7 @@ stages:
       APIMPolicyPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.ApimPolicies/"
       ApimImportScript: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.Scripts/Import-ApimOpenApiDefinitionFromFile.ps1"
       SpecificationPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.OpenApiDocs"
+      ApimApiName: $(ApimApiName)
+      Apis:
+        -
+          - azureFunctionName: '${{ variables.AppServiceName }}'

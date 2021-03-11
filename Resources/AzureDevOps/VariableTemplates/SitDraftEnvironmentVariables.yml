@@ -30,14 +30,20 @@ variables:
 - name: contentUrl
   value: $(ContentApiDraftAddress)/api/execute
 - name: SubscriptionSettingsEndpoint
-  value: https://$(AppServiceName).$(appServiceDomain)
+  value: https://$(AppServiceName).$(FunctionAppDomain)
 - name: subscriptionUrl
-  value: https://dfc-sit-api-eventgridsubscriptions-fa.$(appServiceDomain)
+  value: https://dfc-sit-api-eventgridsubscriptions-fa.$(FunctionAppDomain)
 - name: EventGridPublishClientOptionsApiEndpoint
-  value: https://$(AppServiceName).$(appServiceDomain)/api/execute/lmisoc
+  value: https://$(AppServiceName).$(FunctionAppDomain)/api/execute/lmisoc
 - name: EventGridSubjectPrefix
   value: /$(ApplicationName)/
 - name: AppServiceName
   value: $(WebAppPrefix)-fa
 - name: ApplicationName
   value: dfc-api-lmi-transformation
+- name: apimLoggerName
+  value: LMI-logger
+- name: apimProductName
+  value: LMI
+- name: apimApiName
+  value: Transformation
