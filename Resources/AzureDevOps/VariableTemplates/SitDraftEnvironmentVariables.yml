@@ -46,4 +46,4 @@ variables:
 - name: apimProductName
   value: LMI
 - name: apimApiName
-  value: Transformation
+  value: Transformation-draft
