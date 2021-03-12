@@ -31,7 +31,6 @@ pr:
     - dev
     - master
 
-
 stages:
 - stage: Build
   displayName: Build, Test and Analyze
