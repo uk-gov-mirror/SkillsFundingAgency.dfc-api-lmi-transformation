@@ -298,7 +298,7 @@
               },
               {
                 "name": "SubscriptionSettings__Endpoint",
-                "value": "[concat(parameters('SubscriptionSettingsEndpoint'),'/lmi/webhook')]"
+                "value": "[concat(parameters('SubscriptionSettingsEndpoint'),'/api/lmi/webhook')]"
               },
               {
                 "name": "SubscriptionSettings__SubscriptionServiceEndpoint",
