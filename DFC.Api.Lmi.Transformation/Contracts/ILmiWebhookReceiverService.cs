@@ -1,10 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
+﻿using DFC.Api.Lmi.Transformation.Models.FunctionRequestModels;
 
 namespace DFC.Api.Lmi.Transformation.Contracts
 {
     public interface ILmiWebhookReceiverService
     {
-        Task<IActionResult> ReceiveEventsAsync(string requestBody);
+        WebhookRequestModel ExtractEvent(string requestBody);
     }
 }

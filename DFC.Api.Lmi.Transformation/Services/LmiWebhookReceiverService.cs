@@ -1,15 +1,14 @@
-﻿using DFC.Api.Lmi.Transformation.Contracts;
+﻿using DFC.Api.Lmi.Transformation.Common;
+using DFC.Api.Lmi.Transformation.Contracts;
 using DFC.Api.Lmi.Transformation.Enums;
 using DFC.Api.Lmi.Transformation.Models;
-using Microsoft.AspNetCore.Mvc;
+using DFC.Api.Lmi.Transformation.Models.FunctionRequestModels;
 using Microsoft.Azure.EventGrid;
 using Microsoft.Azure.EventGrid.Models;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Net;
-using System.Threading.Tasks;
 
 namespace DFC.Api.Lmi.Transformation.Services
 {
@@ -25,18 +24,63 @@ namespace DFC.Api.Lmi.Transformation.Services
         };
 
         private readonly ILogger<LmiWebhookReceiverService> logger;
-        private readonly ILmiWebhookService lmiWebhookService;
 
-        public LmiWebhookReceiverService(
-            ILogger<LmiWebhookReceiverService> logger,
-            ILmiWebhookService lmiWebhookService)
+        public LmiWebhookReceiverService(ILogger<LmiWebhookReceiverService> logger)
         {
             this.logger = logger;
-            this.lmiWebhookService = lmiWebhookService;
         }
 
-        public async Task<IActionResult> ReceiveEventsAsync(string requestBody)
+        public static MessageContentType DetermineMessageContentType(string? apiEndpoint)
         {
+            if (!string.IsNullOrWhiteSpace(apiEndpoint))
+            {
+                if (apiEndpoint.EndsWith($"/{Constants.ApiForJobGroups}", StringComparison.OrdinalIgnoreCase))
+                {
+                    return MessageContentType.JobGroup;
+                }
+
+                if (apiEndpoint.Contains($"/{Constants.ApiForJobGroups}/", StringComparison.OrdinalIgnoreCase))
+                {
+                    return MessageContentType.JobGroupItem;
+                }
+            }
+
+            return MessageContentType.None;
+        }
+
+        public static WebhookCommand DetermineWebhookCommand(MessageContentType messageContentType, WebhookCacheOperation webhookCacheOperation)
+        {
+            switch (webhookCacheOperation)
+            {
+                case WebhookCacheOperation.CreateOrUpdate:
+                    switch (messageContentType)
+                    {
+                        case MessageContentType.JobGroup:
+                            return WebhookCommand.TransformAllSocToJobGroup;
+                        case MessageContentType.JobGroupItem:
+                            return WebhookCommand.TransformSocToJobGroup;
+                    }
+
+                    break;
+                case WebhookCacheOperation.Delete:
+                    switch (messageContentType)
+                    {
+                        case MessageContentType.JobGroup:
+                            return WebhookCommand.PurgeAllJobGroups;
+                        case MessageContentType.JobGroupItem:
+                            return WebhookCommand.PurgeJobGroup;
+                    }
+
+                    break;
+            }
+
+            return WebhookCommand.None;
+        }
+
+        public WebhookRequestModel ExtractEvent(string requestBody)
+        {
+            var webhookRequestModel = new WebhookRequestModel();
+
             logger.LogInformation($"Received events: {requestBody}");
 
             var eventGridSubscriber = new EventGridSubscriber();
@@ -58,12 +102,13 @@ namespace DFC.Api.Lmi.Transformation.Services
                 {
                     logger.LogInformation($"Got SubscriptionValidation event data, validationCode: {subscriptionValidationEventData!.ValidationCode},  validationUrl: {subscriptionValidationEventData.ValidationUrl}, topic: {eventGridEvent.Topic}");
 
-                    var responseData = new SubscriptionValidationResponse()
+                    webhookRequestModel.WebhookCommand = WebhookCommand.SubscriptionValidation;
+                    webhookRequestModel.SubscriptionValidationResponse = new SubscriptionValidationResponse()
                     {
                         ValidationResponse = subscriptionValidationEventData.ValidationCode,
                     };
 
-                    return new OkObjectResult(responseData);
+                    return webhookRequestModel;
                 }
                 else if (eventGridEvent.Data is EventGridEventData eventGridEventData)
                 {
@@ -81,9 +126,18 @@ namespace DFC.Api.Lmi.Transformation.Services
 
                     logger.LogInformation($"Got Event Id: {eventId}: {eventGridEvent.EventType}: Cache operation: {cacheOperation} {url}");
 
-                    var result = await lmiWebhookService.ProcessMessageAsync(cacheOperation, eventId, contentId, url).ConfigureAwait(false);
+                    var messageContentType = DetermineMessageContentType(url.ToString());
+                    if (messageContentType == MessageContentType.None)
+                    {
+                        logger.LogError($"Event Id: {eventId} got unknown message content type - {messageContentType} - {url}");
+                        return webhookRequestModel;
+                    }
 
-                    LogResult(eventId, result);
+                    webhookRequestModel.WebhookCommand = DetermineWebhookCommand(messageContentType, cacheOperation);
+                    webhookRequestModel.EventId = eventId;
+                    webhookRequestModel.EventType = eventGridEvent.EventType;
+                    webhookRequestModel.ContentId = contentId;
+                    webhookRequestModel.Url = url;
                 }
                 else
                 {
@@ -91,32 +145,7 @@ namespace DFC.Api.Lmi.Transformation.Services
                 }
             }
 
-            return new OkResult();
-        }
-
-        private void LogResult(Guid eventId, HttpStatusCode result)
-        {
-            switch (result)
-            {
-                case HttpStatusCode.OK:
-                    logger.LogInformation($"Event Id: {eventId}, Updated Content");
-                    break;
-
-                case HttpStatusCode.Created:
-                    logger.LogInformation($"Event Id: {eventId}, Created Content");
-                    break;
-
-                case HttpStatusCode.AlreadyReported:
-                    logger.LogInformation($"Event Id: {eventId}, Content previously updated");
-                    break;
-
-                case HttpStatusCode.NoContent:
-                    logger.LogInformation($"Event Id: {eventId}, Content previously deleted");
-                    break;
-
-                default:
-                    throw new InvalidDataException($"Event Id: {eventId}, Content  not updated: Status: {result}");
-            }
+            return webhookRequestModel;
         }
     }
 }

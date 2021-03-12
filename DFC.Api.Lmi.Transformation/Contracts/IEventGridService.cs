@@ -1,12 +1,11 @@
-﻿using DFC.Api.Lmi.Transformation.Enums;
-using DFC.Api.Lmi.Transformation.Models;
+﻿using DFC.Api.Lmi.Transformation.Models;
 using System.Threading.Tasks;
 
 namespace DFC.Api.Lmi.Transformation.Contracts
 {
     public interface IEventGridService
     {
-        Task SendEventAsync(WebhookCacheOperation webhookCacheOperation, EventGridEventData? eventGridEventData, string? subject);
+        Task SendEventAsync(EventGridEventData? eventGridEventData, string? subject, string? eventType);
 
         bool IsValidEventGridClientOptions(EventGridClientOptions? eventGridClientOptions);
     }
