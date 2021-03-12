@@ -314,7 +314,23 @@
               },
               {
                 "name": "SubscriptionSettings__Filter__IncludeEventTypes__0",
-                "value": "[if(contains(variables('resourcePrefix'),'draft'),'draft','published')]"
+                "value": "published"
+              },
+              {
+                "name": "SubscriptionSettings__Filter__IncludeEventTypes__1",
+                "value": "unpublished"
+              },
+              {
+                "name": "SubscriptionSettings__Filter__IncludeEventTypes__2",
+                "value": "deleted"
+              },
+              {
+                "name": "SubscriptionSettings__Filter__IncludeEventTypes__3",
+                "value": "[if(contains(variables('resourcePrefix'),'draft'),'draft','')]"
+              },
+              {
+                "name": "SubscriptionSettings__Filter__IncludeEventTypes__4",
+                "value": "[if(contains(variables('resourcePrefix'),'draft'),'draft-discarded','')]"
               },
               {
                 "name": "EventGridClientOptions__TopicKey",
