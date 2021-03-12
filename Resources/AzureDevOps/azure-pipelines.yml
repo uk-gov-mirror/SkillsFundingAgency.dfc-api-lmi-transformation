@@ -19,17 +19,17 @@ pool:
   - msbuild
   - visualstudio
 
-# trigger: 
-#   branches:
-#     include: 
-#     - dev
-#     - master
+trigger: 
+  branches:
+    include: 
+    - dev
+    - master
 
-# pr:
-#   branches:
-#     include: 
-#     - dev
-#     - master
+pr:
+  branches:
+    include: 
+    - dev
+    - master
 
 
 stages:
@@ -81,12 +81,7 @@ stages:
       EnvironmentName: DEV_LMI_TRANSFORMATIONS
       AppSharedResourceGroup: $(AppSharedResourceGroup)
       appSharedCosmosDBName: $(appSharedCosmosDBName)
-      PageRegistrationPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.PageRegistrations/"
-      PageRegistrationFile: "$(PageRegistrationFile)"
-      AppRegistryApiUrl: "$(AppRegistryApiUrl)"
-      ApimCompositeKey: "$(ApimCompositeKey)"
       AppServiceName: '$(FunctionAppName)'
-      AppRegistryClientOptionsBaseAddress: $(AppRegistryClientOptionsBaseAddress)
       ApimLoggerName: "$(ApimLoggerName)"
       ApimProductName: "$(ApimProductName)"
       SharedResourceGroup: $(SharedResourceGroup)
@@ -95,7 +90,6 @@ stages:
       ApiName: $(ApiName)
       ApiId: $(ApiId)
       FunctionAppDomain: $(FunctionAppDomain)
-      ApiDefinitionPath: $(ApiDefinitionPath)
       APIMPolicyPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.ApimPolicies/"
       ApimImportScript: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.Scripts/Import-ApimOpenApiDefinitionFromFile.ps1"
       SpecificationPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.OpenApiDocs"
@@ -132,12 +126,7 @@ stages:
       EnvironmentName: DEV-DRAFT_LMI_TRANSFORMATIONS
       AppSharedResourceGroup: $(AppSharedResourceGroup)
       appSharedCosmosDBName: $(appSharedCosmosDBName)
-      PageRegistrationPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.PageRegistrations/"
-      PageRegistrationFile: "$(PageRegistrationFile)"
-      AppRegistryApiUrl: "$(AppRegistryApiUrl)"
-      ApimCompositeKey: "$(ApimCompositeKey)"
       AppServiceName: '$(FunctionAppName)'
-      AppRegistryClientOptionsBaseAddress: $(AppRegistryClientOptionsBaseAddress)
       ApimLoggerName: "$(ApimLoggerName)"
       ApimProductName: "$(ApimProductName)"
       SharedResourceGroup: $(SharedResourceGroup)
@@ -146,7 +135,6 @@ stages:
       ApiName: $(ApiName)
       ApiId: $(ApiId)
       FunctionAppDomain: $(FunctionAppDomain)
-      ApiDefinitionPath: $(ApiDefinitionPath)
       APIMPolicyPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.ApimPolicies/"
       ApimImportScript: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.Scripts/Import-ApimOpenApiDefinitionFromFile.ps1"
       SpecificationPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.OpenApiDocs"
@@ -183,12 +171,7 @@ stages:
       EnvironmentName: SIT_LMI_TRANSFORMATIONS
       AppSharedResourceGroup: $(AppSharedResourceGroup)
       appSharedCosmosDBName: $(appSharedCosmosDBName)
-      PageRegistrationPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.PageRegistrations/"
-      PageRegistrationFile: "$(PageRegistrationFile)"
-      AppRegistryApiUrl: "$(AppRegistryApiUrl)"
-      ApimCompositeKey: "$(ApimCompositeKey)"
       AppServiceName: '$(FunctionAppName)'
-      AppRegistryClientOptionsBaseAddress: $(AppRegistryClientOptionsBaseAddress)
       ApimLoggerName: "$(ApimLoggerName)"
       ApimProductName: "$(ApimProductName)"
       SharedResourceGroup: $(SharedResourceGroup)
@@ -197,7 +180,6 @@ stages:
       ApiName: $(ApiName)
       ApiId: $(ApiId)
       FunctionAppDomain: $(FunctionAppDomain)
-      ApiDefinitionPath: $(ApiDefinitionPath)
       APIMPolicyPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.ApimPolicies/"
       ApimImportScript: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.Scripts/Import-ApimOpenApiDefinitionFromFile.ps1"
       SpecificationPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.OpenApiDocs"
@@ -234,12 +216,7 @@ stages:
       EnvironmentName: SIT-DRAFT_LMI_TRANSFORMATIONS
       AppSharedResourceGroup: $(AppSharedResourceGroup)
       appSharedCosmosDBName: $(appSharedCosmosDBName)
-      PageRegistrationPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.PageRegistrations/"
-      PageRegistrationFile: "$(PageRegistrationFile)"
-      AppRegistryApiUrl: "$(AppRegistryApiUrl)"
-      ApimCompositeKey: "$(ApimCompositeKey)"
       AppServiceName: '$(FunctionAppName)'
-      AppRegistryClientOptionsBaseAddress: $(AppRegistryClientOptionsBaseAddress)
       ApimLoggerName: "$(ApimLoggerName)"
       ApimProductName: "$(ApimProductName)"
       SharedResourceGroup: $(SharedResourceGroup)
@@ -248,7 +225,6 @@ stages:
       ApiName: $(ApiName)
       ApiId: $(ApiId)
       FunctionAppDomain: $(FunctionAppDomain)
-      ApiDefinitionPath: $(ApiDefinitionPath)
       APIMPolicyPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.ApimPolicies/"
       ApimImportScript: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.Scripts/Import-ApimOpenApiDefinitionFromFile.ps1"
       SpecificationPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.OpenApiDocs"

@@ -1,14 +1,14 @@
 parameters:
   AzureSubscription: ''
+  DfCDevopsPath: ''
   SetEsfaResourceGroupTagsScript: 'https://raw.githubusercontent.com/SkillsFundingAgency/dfc-devops/master/PSScripts/Set-EsfaResourceGroupTags.ps1'
   EnvironmentTag: ''
   ParentBusiness: ''
   ServiceOffering: ''
   ResourceGroup: ''
-  DfCDevopsPath: ''
   Location: 'West Europe'
-  ArmTemplateFolder: ''
   ArmOutputVariableName: 'ARMOutputs'
+  ArmTemplateFolder: ''
   AppSharedResourceGroup: ''
   appSharedCosmosDBName: ''
 

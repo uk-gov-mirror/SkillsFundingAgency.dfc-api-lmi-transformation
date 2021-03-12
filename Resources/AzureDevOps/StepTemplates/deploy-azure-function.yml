@@ -1,9 +1,9 @@
 parameters:
-  AzureSubscription: ''
   WebAppName: ''
-  ResourceGroup: ''
+  AzureSubscription: ''
   FunctionAppDomain: ''
   PackageFile: ''
+  ResourceGroup: ''
   SharedResourceGroup: ''
   ApimServiceName: ''
   ApimProductName: ''
