@@ -8,7 +8,6 @@ using DFC.Api.Lmi.Transformation.Startup;
 using DFC.Compui.Cosmos;
 using DFC.Compui.Cosmos.Contracts;
 using DFC.Compui.Subscriptions.Pkg.Netstandard.Extensions;
-using DFC.Content.Pkg.Netcore.Data.Models.ClientOptions;
 using DFC.Content.Pkg.Netcore.Extensions;
 using DFC.Swagger.Standard;
 using Microsoft.Azure.WebJobs;
@@ -50,10 +49,6 @@ namespace DFC.Api.Lmi.Transformation.Startup
             builder.Services.AddSubscriptionService(configuration);
             builder.Services.AddTransient<ISwaggerDocumentGenerator, SwaggerDocumentGenerator>();
             builder.Services.AddTransient<ILmiWebhookReceiverService, LmiWebhookReceiverService>();
-            builder.Services.AddTransient<ILmiWebhookService, LmiWebhookService>();
-            builder.Services.AddTransient<IWebhookContentService, WebhookContentService>();
-            builder.Services.AddTransient<IWebhookDeleteService, WebhookDeleteService>();
-            builder.Services.AddTransient<ITransformationService, TransformationService>();
             builder.Services.AddTransient<IEventGridService, EventGridService>();
             builder.Services.AddTransient<IEventGridClientService, EventGridClientService>();
 

@@ -1,5 +1,4 @@
 ﻿using DFC.Api.Lmi.Transformation.Contracts;
-using DFC.Api.Lmi.Transformation.Enums;
 using DFC.Api.Lmi.Transformation.Models;
 using Microsoft.Azure.EventGrid.Models;
 using Microsoft.Extensions.Logging;
@@ -22,7 +21,7 @@ namespace DFC.Api.Lmi.Transformation.Services
             this.eventGridClientOptions = eventGridClientOptions;
         }
 
-        public async Task SendEventAsync(WebhookCacheOperation webhookCacheOperation, EventGridEventData? eventGridEventData, string? subject)
+        public async Task SendEventAsync(EventGridEventData? eventGridEventData, string? subject, string? eventType)
         {
             _ = eventGridEventData ?? throw new ArgumentNullException(nameof(eventGridEventData));
 
@@ -41,8 +40,8 @@ namespace DFC.Api.Lmi.Transformation.Services
                     Id = Guid.NewGuid().ToString(),
                     Subject = subject,
                     Data = eventGridEventData,
-                    EventType = webhookCacheOperation == WebhookCacheOperation.Delete ? "deleted" : "published",
-                    EventTime = DateTime.Now,
+                    EventType = eventType,
+                    EventTime = DateTime.UtcNow,
                     DataVersion = "1.0",
                 },
             };

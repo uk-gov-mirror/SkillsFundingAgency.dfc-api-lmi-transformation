@@ -53,7 +53,8 @@ namespace DFC.Api.Lmi.Transformation.Functions
                 ApiVersion,
                 Assembly.GetExecutingAssembly(),
                 false,
-                false))
+                false,
+                "/"))
                 .ConfigureAwait(false);
 
             return new OkObjectResult(swaggerDoc);

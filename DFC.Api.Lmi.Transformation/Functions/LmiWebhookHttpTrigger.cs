@@ -1,13 +1,15 @@
 ﻿using DFC.Api.Lmi.Transformation.Contracts;
+using DFC.Api.Lmi.Transformation.Enums;
+using DFC.Api.Lmi.Transformation.Models.FunctionRequestModels;
 using DFC.Swagger.Standard.Annotations;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
+using Microsoft.Azure.WebJobs.Extensions.DurableTask;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using System;
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
@@ -28,7 +30,6 @@ namespace DFC.Api.Lmi.Transformation.Functions
         }
 
         [FunctionName("LmiWebhook")]
-        [Timeout("04:00:00")]
         [Display(Name = "LMI Webhook", Description = "Receives webhook Post requests for LMI refresh.")]
         [Response(HttpStatusCode = (int)HttpStatusCode.OK, Description = "Page processed", ShowSchema = false)]
         [Response(HttpStatusCode = (int)HttpStatusCode.BadRequest, Description = "Invalid request data", ShowSchema = false)]
@@ -37,28 +38,15 @@ namespace DFC.Api.Lmi.Transformation.Functions
         [Response(HttpStatusCode = (int)HttpStatusCode.Forbidden, Description = "Insufficient access", ShowSchema = false)]
         [Response(HttpStatusCode = (int)HttpStatusCode.TooManyRequests, Description = "Too many requests being sent, by default the API supports 150 per minute.", ShowSchema = false)]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "lmi/webhook")] HttpRequest? request)
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "lmi/webhook")] HttpRequest? request,
+            [DurableClient] IDurableOrchestrationClient starter)
         {
-            Activity? activity = null;
-
             try
             {
                 logger.LogInformation("Received webhook request");
 
-                //TODO: ian: need to initialize the telemetry properly
-                if (Activity.Current == null)
-                {
-                    activity = new Activity(nameof(LmiWebhookHttpTrigger)).Start();
-                    activity.SetParentId(Guid.NewGuid().ToString());
-                }
-
-                if (request == null)
-                {
-                    logger.LogError($"{nameof(request)} is null");
-                    return new StatusCodeResult((int)HttpStatusCode.BadRequest);
-                }
-
-                using var streamReader = new StreamReader(request.Body);
+                bool isDraftEnvironment = !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("ApiSuffix"));
+                using var streamReader = new StreamReader(request?.Body!);
                 var requestBody = await streamReader.ReadToEndAsync().ConfigureAwait(false);
 
                 if (string.IsNullOrEmpty(requestBody))
@@ -67,20 +55,59 @@ namespace DFC.Api.Lmi.Transformation.Functions
                     return new StatusCodeResult((int)HttpStatusCode.BadRequest);
                 }
 
-                var result = await lmiWebhookReceiverService.ReceiveEventsAsync(requestBody).ConfigureAwait(false);
+                string? instanceId = null;
+                SocRequestModel? socRequest = null;
+                var webhookRequestModel = lmiWebhookReceiverService.ExtractEvent(requestBody);
+                switch (webhookRequestModel.WebhookCommand)
+                {
+                    case WebhookCommand.SubscriptionValidation:
+                        return new OkObjectResult(webhookRequestModel.SubscriptionValidationResponse);
+                    case WebhookCommand.TransformAllSocToJobGroup:
+                        socRequest = new SocRequestModel
+                        {
+                            Url = webhookRequestModel.Url,
+                            IsDraftEnvironment = isDraftEnvironment,
+                        };
+                        instanceId = await starter.StartNewAsync(nameof(LmiOrchestrationTrigger.RefreshOrchestrator), socRequest).ConfigureAwait(false);
+                        break;
+                    case WebhookCommand.TransformSocToJobGroup:
+                        socRequest = new SocRequestModel
+                        {
+                            Url = webhookRequestModel.Url,
+                            SocId = webhookRequestModel.ContentId,
+                            IsDraftEnvironment = isDraftEnvironment,
+                        };
+                        instanceId = await starter.StartNewAsync(nameof(LmiOrchestrationTrigger.RefreshJobGroupOrchestrator), socRequest).ConfigureAwait(false);
+                        break;
+                    case WebhookCommand.PurgeAllJobGroups:
+                        socRequest = new SocRequestModel
+                        {
+                            Url = webhookRequestModel.Url,
+                            IsDraftEnvironment = isDraftEnvironment,
+                        };
+                        instanceId = await starter.StartNewAsync(nameof(LmiOrchestrationTrigger.PurgeOrchestrator), socRequest).ConfigureAwait(false);
+                        break;
+                    case WebhookCommand.PurgeJobGroup:
+                        socRequest = new SocRequestModel
+                        {
+                            Url = webhookRequestModel.Url,
+                            SocId = webhookRequestModel.ContentId,
+                            IsDraftEnvironment = isDraftEnvironment,
+                        };
+                        instanceId = await starter.StartNewAsync(nameof(LmiOrchestrationTrigger.PurgeJobGroupOrchestrator), socRequest).ConfigureAwait(false);
+                        break;
+                    default:
+                        return new StatusCodeResult((int)HttpStatusCode.BadRequest);
+                }
 
-                logger.LogInformation("Webhook request completed");
+                logger.LogInformation($"Started orchestration with ID = '{instanceId}' for SOC {socRequest?.Url}");
 
-                return result;
+                return starter.CreateCheckStatusResponse(request, instanceId);
             }
             catch (Exception ex)
             {
                 logger.LogError(ex.ToString());
                 return new StatusCodeResult((int)HttpStatusCode.InternalServerError);
-            }
-            finally
-            {
-                activity?.Dispose();
             }
         }
     }
