@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Net;
@@ -36,11 +37,11 @@ namespace DFC.Api.Lmi.Transformation.Functions
         [Response(HttpStatusCode = (int)HttpStatusCode.Forbidden, Description = "Insufficient access", ShowSchema = false)]
         [Response(HttpStatusCode = (int)HttpStatusCode.TooManyRequests, Description = "Too many requests being sent, by default the API supports 150 per minute.", ShowSchema = false)]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "job-groups/{soc}")] HttpRequest? request, int soc)
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "job-groups/{socId}")] HttpRequest? request, Guid socId)
         {
-            logger.LogInformation($"Getting job-group for {soc}");
+            logger.LogInformation($"Getting job-group for {socId}");
 
-            var jobGroupModel = await documentService.GetAsync(j => j.Soc == soc, soc.ToString(CultureInfo.InvariantCulture)).ConfigureAwait(false);
+            var jobGroupModel = await documentService.GetByIdAsync(socId).ConfigureAwait(false);
 
             if (jobGroupModel != null)
             {
@@ -49,7 +50,7 @@ namespace DFC.Api.Lmi.Transformation.Functions
                 return new OkObjectResult(jobGroupModel);
             }
 
-            logger.LogWarning($"Failed to get job-group for {soc}");
+            logger.LogWarning($"Failed to get job-group for {socId}");
 
             return new NoContentResult();
         }
