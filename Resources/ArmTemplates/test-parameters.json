@@ -80,20 +80,20 @@
       "EventGridSubjectPrefix": {
           "value": "EventGridSubjectPrefix"
       },
-      "apimServiceName": {
-          "value": "apimServiceName"
-      },
-      "apimProductName": {
-          "value": "apimProductName"
-      },
-      "apimApiName": {
-          "value": "apimApiName"
-      },
       "apimLoggerName": {
-          "value": "apimLoggerName"
+        "value": "LMI-logger"
       },
       "apimResourceGroup": {
-          "value": "apimResourceGroup"
+        "value": "dfc-test-template-rg"
+      },
+      "apimServiceName": {
+        "value": "an-apim-instance"
+      },
+      "apimProductName": {
+        "value": "LMI"
+      },
+      "apimApiName": {
+        "value": "api-name"
       }
     }
   }
