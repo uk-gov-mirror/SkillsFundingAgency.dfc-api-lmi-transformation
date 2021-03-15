@@ -102,6 +102,21 @@
     },
     "EventGridSubjectPrefix": {
       "type": "securestring"
+    },
+    "apimServiceName": {
+      "type": "string"
+    },
+    "apimProductName": {
+      "type": "string"
+    },
+    "apimApiName": {
+      "type": "string"
+    },
+    "apimLoggerName": {
+      "type": "string"
+    },
+    "apimResourceGroup": {
+      "type": "string"
     }
   },
   "variables": {
@@ -117,6 +132,37 @@
     "ActionGroupName": "[concat('dfc-', replace(tolower(parameters('Environment')), '-draft', ''), '-app-sharedresources-actgrp')]"
   },
   "resources": [
+    {
+      "name": "[parameters('apimApiName')]",
+      "type": "Microsoft.Resources/deployments",
+      "resourceGroup": "[parameters('apimResourceGroup')]",
+      "apiVersion": "2017-05-10",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(variables('BuildingBlocksDfcBaseUrl'), 'APIM/apim-api.json')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "apimLoggerName": {
+            "value": "[parameters('apimLoggerName')]"
+          },
+          "apimProductInstanceName": {
+            "value": "[parameters('apimProductName')]"
+          },
+          "apimServiceName": {
+            "value": "[parameters('apimServiceName')]"
+          },
+          "apiName": {
+            "value": "[parameters('apimApiName')]"
+          }
+        }
+      },
+      "dependsOn": [
+        "[parameters('apimProductName')]",
+        "[parameters('apimLoggerName')]"
+      ]
+    },
     {
       "apiVersion": "2017-05-10",
       "name": "[variables('appServicePlanName')]",

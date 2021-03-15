@@ -79,6 +79,21 @@
       },
       "EventGridSubjectPrefix": {
           "value": "EventGridSubjectPrefix"
+      },
+      "apimServiceName": {
+          "value": "apimServiceName"
+      },
+      "apimProductName": {
+          "value": "apimProductName"
+      },
+      "apimApiName": {
+          "value": "apimApiName"
+      },
+      "apimLoggerName": {
+          "value": "apimLoggerName"
+      },
+      "apimResourceGroup": {
+          "value": "apimResourceGroup"
       }
     }
   }
