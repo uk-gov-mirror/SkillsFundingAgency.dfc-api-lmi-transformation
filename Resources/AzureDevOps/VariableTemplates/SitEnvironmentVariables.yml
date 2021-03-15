@@ -28,7 +28,7 @@ variables:
 - name: cosmosJobGroupDiffDbCollectionName
   value: job-groups-differences
 - name: contentUrl
-  value: $(ContentApiAddress)/api/execute
+  value: $(ContentApiAddress)/api/execute/
 - name: SubscriptionSettingsEndpoint
   value: https://$(FunctionAppName).$(FunctionAppDomain)
 - name: subscriptionUrl
