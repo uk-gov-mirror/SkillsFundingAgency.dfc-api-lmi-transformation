@@ -82,6 +82,7 @@ namespace DFC.Api.Lmi.Transformation.Functions
                 var eventGridPostRequest = new EventGridPostRequestModel
                 {
                     SocId = socRequest.SocId,
+                    Api = $"{eventGridClientOptions.ApiEndpoint}/{socRequest.SocId}",
                     DisplayText = $"LMI transformed into job-group from {socRequest.Url}",
                     EventType = socRequest.IsDraftEnvironment ? EventTypeForDraft : EventTypeForPublished,
                 };
@@ -106,6 +107,7 @@ namespace DFC.Api.Lmi.Transformation.Functions
             var eventGridPostRequest = new EventGridPostRequestModel
             {
                 SocId = socRequest.SocId,
+                Api = $"{eventGridClientOptions.ApiEndpoint}/{socRequest.SocId}",
                 DisplayText = $"LMI purged job-group for {socRequest.SocId}",
                 EventType = socRequest.IsDraftEnvironment ? EventTypeForDraftDiscarded : EventTypeForDeleted,
             };
@@ -125,6 +127,7 @@ namespace DFC.Api.Lmi.Transformation.Functions
             var eventGridPostRequest = new EventGridPostRequestModel
             {
                 SocId = socRequest.SocId,
+                Api = $"{eventGridClientOptions.ApiEndpoint}",
                 DisplayText = "LMI purged all job-group ",
                 EventType = socRequest.IsDraftEnvironment ? EventTypeForDraftDiscarded : EventTypeForDeleted,
             };
@@ -159,6 +162,7 @@ namespace DFC.Api.Lmi.Transformation.Functions
                 var eventGridPostRequest = new EventGridPostRequestModel
                 {
                     SocId = socRequest.SocId,
+                    Api = $"{eventGridClientOptions.ApiEndpoint}",
                     DisplayText = $"LMI transformed all job-groups from {socRequest.Url}",
                     EventType = socRequest.IsDraftEnvironment ? EventTypeForDraft : EventTypeForPublished,
                 };
@@ -235,7 +239,7 @@ namespace DFC.Api.Lmi.Transformation.Functions
             var eventGridEventData = new EventGridEventData
             {
                 ItemId = $"{eventGridPostRequest.SocId}",
-                Api = $"{eventGridClientOptions.ApiEndpoint}/{eventGridPostRequest.SocId}",
+                Api = eventGridPostRequest.Api,
                 DisplayText = eventGridPostRequest.DisplayText,
                 VersionId = Guid.NewGuid().ToString(),
                 Author = eventGridClientOptions.SubjectPrefix,
