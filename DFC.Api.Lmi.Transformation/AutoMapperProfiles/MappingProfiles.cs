@@ -15,7 +15,6 @@ namespace DFC.Api.Lmi.Transformation.AutoMapperProfiles
             CreateMap<JobGroupModel, JobGroupSummaryItemModel>();
 
             CreateMap<LmiSoc, JobGroupModel>()
-                .ForMember(d => d.Id, s => s.MapFrom(m => m.ItemId))
                 .ForMember(d => d.Title, s => s.MapFrom(m => m.Title))
                 .ForMember(d => d.TransformedDate, s => s.Ignore())
                 .ForMember(d => d.JobProfiles, opt => opt.ConvertUsing(new JobProfileListConverter(), a => a.ContentItems))

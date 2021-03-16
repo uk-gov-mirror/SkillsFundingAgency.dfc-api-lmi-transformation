@@ -16,7 +16,7 @@ namespace DFC.Api.Lmi.Transformation.UnitTests.Functions
     [Trait("Category", "GetDetai - http trigger function Unit Tests")]
     public class GetDetailHttpTriggerTests
     {
-        private const int Soc = 3231;
+        private Guid SocId = Guid.NewGuid();
 
         private readonly ILogger<GetDetailHttpTrigger> fakeLogger = A.Fake<ILogger<GetDetailHttpTrigger>>();
         private readonly IDocumentService<JobGroupModel> fakeDocumentService = A.Fake<IDocumentService<JobGroupModel>>();
@@ -34,13 +34,13 @@ namespace DFC.Api.Lmi.Transformation.UnitTests.Functions
             const HttpStatusCode expectedResult = HttpStatusCode.OK;
             var dummyModel = A.Dummy<JobGroupModel>();
 
-            A.CallTo(() => fakeDocumentService.GetAsync(A<Expression<Func<JobGroupModel, bool>>>.Ignored, A<string>.Ignored)).Returns(dummyModel);
+            A.CallTo(() => fakeDocumentService.GetByIdAsync(A<Guid>.Ignored, A<string>.Ignored)).Returns(dummyModel);
 
             // Act
-            var result = await getDetailHttpTrigger.Run(A.Fake<HttpRequest>(), Soc).ConfigureAwait(false);
+            var result = await getDetailHttpTrigger.Run(A.Fake<HttpRequest>(), SocId).ConfigureAwait(false);
 
             // Assert
-            A.CallTo(() => fakeDocumentService.GetAsync(A<Expression<Func<JobGroupModel, bool>>>.Ignored, A<string>.Ignored)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => fakeDocumentService.GetByIdAsync(A<Guid>.Ignored, A<string>.Ignored)).MustHaveHappenedOnceExactly();
 
             var statusResult = Assert.IsType<OkObjectResult>(result);
             Assert.Equal((int)expectedResult, statusResult.StatusCode);
@@ -53,13 +53,13 @@ namespace DFC.Api.Lmi.Transformation.UnitTests.Functions
             const HttpStatusCode expectedResult = HttpStatusCode.NoContent;
             JobGroupModel? nullModel = default;
 
-            A.CallTo(() => fakeDocumentService.GetAsync(A<Expression<Func<JobGroupModel, bool>>>.Ignored, A<string>.Ignored)).Returns(nullModel);
+            A.CallTo(() => fakeDocumentService.GetByIdAsync(A<Guid>.Ignored, A<string>.Ignored)).Returns(nullModel);
 
             // Act
-            var result = await getDetailHttpTrigger.Run(A.Fake<HttpRequest>(), Soc).ConfigureAwait(false);
+            var result = await getDetailHttpTrigger.Run(A.Fake<HttpRequest>(), SocId).ConfigureAwait(false);
 
             // Assert
-            A.CallTo(() => fakeDocumentService.GetAsync(A<Expression<Func<JobGroupModel, bool>>>.Ignored, A<string>.Ignored)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => fakeDocumentService.GetByIdAsync(A<Guid>.Ignored, A<string>.Ignored)).MustHaveHappenedOnceExactly();
 
             var statusResult = Assert.IsType<NoContentResult>(result);
             Assert.Equal((int)expectedResult, statusResult.StatusCode);
