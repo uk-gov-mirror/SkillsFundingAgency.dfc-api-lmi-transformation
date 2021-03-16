@@ -79,6 +79,21 @@
       },
       "EventGridSubjectPrefix": {
           "value": "EventGridSubjectPrefix"
+      },
+      "apimLoggerName": {
+        "value": "LMI-logger"
+      },
+      "apimResourceGroup": {
+        "value": "dfc-test-template-rg"
+      },
+      "apimServiceName": {
+        "value": "an-apim-instance"
+      },
+      "apimProductName": {
+        "value": "LMI"
+      },
+      "apimApiName": {
+        "value": "api-name"
       }
     }
   }
