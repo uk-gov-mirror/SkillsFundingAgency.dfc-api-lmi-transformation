@@ -17,6 +17,9 @@
       "Environment": {
         "value": "FOO"
       },
+      "ApimLmiKey": {
+        "value": "123456789"
+    },
       "cosmosDbKey": {
           "value": "not-a-real-key"
       },

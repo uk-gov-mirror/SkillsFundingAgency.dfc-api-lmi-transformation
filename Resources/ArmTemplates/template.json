@@ -17,6 +17,9 @@
     "aspTier": {
       "type": "string"
     },
+     "ApimLmiKey": {
+      "type": "string"
+    },
     "aseHostingEnvironmentName": {
       "type": "string",
       "defaultValue": ""
@@ -389,7 +392,7 @@
               },
               {
                 "name": "SubscriptionSettings__Endpoint",
-                "value": "[concat(parameters('SubscriptionSettingsEndpoint'),'/api/lmi/webhook')]"
+                "value": "[parameters('SubscriptionSettingsEndpoint')]"
               },
               {
                 "name": "SubscriptionSettings__SubscriptionServiceEndpoint",
@@ -397,7 +400,7 @@
               },
               {
                 "name": "SubscriptionSettings__ApiKey",
-                "value": "[parameters('apimCompositeApiKey')]"
+                "value": "[parameters('apimLmiKey')]"
               },
               {
                 "name": "SubscriptionSettings__Filter__BeginsWith",
@@ -414,6 +417,10 @@
               {
                 "name": "SubscriptionSettings__Filter__IncludeEventTypes__2",
                 "value": "deleted"
+              },
+              {
+                "name": "CmsApiClientOptions__TimeOut",
+                "value": "00:01:00"
               },
               {
                 "name": "SubscriptionSettings__Filter__IncludeEventTypes__3",

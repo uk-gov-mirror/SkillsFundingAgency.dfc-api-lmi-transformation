@@ -56,6 +56,9 @@
             "comment": "Bug in tokenisation task prevents referencing Release.EnvironmentName directly.  https://github.com/TotalALM/VSTS-Tasks/issues/29"
         }
       },
+      "ApimLmiKey": {
+        "value": "__ApimLmiKey__"
+      },
       "ExceptionCountThreshold": {
           "value": "__ExceptionCountThreshold__"
       },

@@ -44,6 +44,12 @@ stages:
         ArmTemplateRoot: '${{ variables.ArmTemplateRoot }}'
         SolutionBaseName: '${{ variables.SolutionBaseName }}'
 
+    - task: PublishPipelineArtifact@1
+      displayName: Publish Apim Policy
+      inputs:
+        targetPath: "$(Build.SourcesDirectory)/Resources/ApimPolicy"
+        artifactName: ${{ variables.SolutionBaseName }}.ApimPolicies
+
   - job: BuildTestAndAnalyze
     displayName: "Build and test application"
     steps:
@@ -89,6 +95,7 @@ stages:
       ApimProductInstanceName: $(ApimProductInstanceName)
       ApiName: $(ApiName)
       ApiId: $(ApiId)
+      ApimLmiKey: "$(ApimLmiKey)"
       FunctionAppDomain: $(FunctionAppDomain)
       APIMPolicyPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.ApimPolicies/"
       ApimImportScript: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.Scripts/Import-ApimOpenApiDefinitionFromFile.ps1"
@@ -134,6 +141,7 @@ stages:
       ApimProductInstanceName: $(ApimProductInstanceName)
       ApiName: $(ApiName)
       ApiId: $(ApiId)
+      ApimLmiKey: "$(ApimLmiKey)"
       FunctionAppDomain: $(FunctionAppDomain)
       APIMPolicyPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.ApimPolicies/"
       ApimImportScript: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.Scripts/Import-ApimOpenApiDefinitionFromFile.ps1"
@@ -179,6 +187,7 @@ stages:
       ApimProductInstanceName: $(ApimProductInstanceName)
       ApiName: $(ApiName)
       ApiId: $(ApiId)
+      ApimLmiKey: "$(ApimLmiKey)"
       FunctionAppDomain: $(FunctionAppDomain)
       APIMPolicyPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.ApimPolicies/"
       ApimImportScript: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.Scripts/Import-ApimOpenApiDefinitionFromFile.ps1"
@@ -224,6 +233,7 @@ stages:
       ApimProductInstanceName: $(ApimProductInstanceName)
       ApiName: $(ApiName)
       ApiId: $(ApiId)
+      ApimLmiKey: "$(ApimLmiKey)"
       FunctionAppDomain: $(FunctionAppDomain)
       APIMPolicyPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.ApimPolicies/"
       ApimImportScript: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.Scripts/Import-ApimOpenApiDefinitionFromFile.ps1"

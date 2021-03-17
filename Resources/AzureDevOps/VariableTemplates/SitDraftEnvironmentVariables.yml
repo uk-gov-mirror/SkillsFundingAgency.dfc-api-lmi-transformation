@@ -30,7 +30,7 @@ variables:
 - name: contentUrl
   value: $(ContentApiDraftAddress)/api/execute/
 - name: SubscriptionSettingsEndpoint
-  value: https://$(FunctionAppName).$(FunctionAppDomain)
+  value: $(ApimProxyAddress)/LMI-Transformation-draft/lmi/webhook?subscription-key=$(apimLmiKey)
 - name: subscriptionUrl
   value: https://dfc-sit-api-eventgridsubscriptions-fa.$(FunctionAppDomain)/api/execute/
 - name: EventGridPublishClientOptionsApiEndpoint
