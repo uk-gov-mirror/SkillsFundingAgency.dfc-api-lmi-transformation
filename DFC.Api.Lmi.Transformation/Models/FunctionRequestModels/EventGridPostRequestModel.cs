@@ -6,7 +6,7 @@ namespace DFC.Api.Lmi.Transformation.Models.FunctionRequestModels
     [ExcludeFromCodeCoverage]
     public class EventGridPostRequestModel
     {
-        public Guid? SocId { get; set; }
+        public Guid? ItemId { get; set; }
 
         public string? Api { get; set; }
 

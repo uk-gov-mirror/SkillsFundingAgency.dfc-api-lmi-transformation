@@ -263,7 +263,7 @@ namespace DFC.Api.Lmi.Transformation.UnitTests.Functions
             // Arrange
             var eventGridPostRequest = new EventGridPostRequestModel
             {
-                SocId = Guid.NewGuid(),
+                ItemId = Guid.NewGuid(),
                 DisplayText = "Display text",
                 EventType = "published",
             };
