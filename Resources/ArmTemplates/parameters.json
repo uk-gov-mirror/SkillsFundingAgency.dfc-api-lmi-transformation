@@ -77,9 +77,6 @@
       "subscriptionUrl": {
         "value": "__subscriptionUrl__"
       },
-      "apimCompositeApiKey": {
-          "value": "__apimCompositeKey__"
-      },
       "EventGridAegSasKey": {
           "value": "__EventGridAegSasKey__"
       },

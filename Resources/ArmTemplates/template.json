@@ -91,9 +91,6 @@
         "description": "subscriptionUrl"
       }
     },
-    "apimCompositeApiKey": {
-      "type": "securestring"
-    },
     "EventGridAegSasKey": {
       "type": "securestring"
     },

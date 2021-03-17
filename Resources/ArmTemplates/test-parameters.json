@@ -19,7 +19,7 @@
       },
       "ApimLmiKey": {
         "value": "123456789"
-    },
+      },
       "cosmosDbKey": {
           "value": "not-a-real-key"
       },
@@ -67,9 +67,6 @@
       },
       "subscriptionUrl":{
         "value": "subscriptionUrl"
-      },
-      "apimCompositeApiKey": {
-          "value": "apimCompositeKey"
       },
       "EventGridAegSasKey": {
           "value": "EventGridAegSasKey"
