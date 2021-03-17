@@ -81,7 +81,7 @@ namespace DFC.Api.Lmi.Transformation.Functions
             {
                 var eventGridPostRequest = new EventGridPostRequestModel
                 {
-                    SocId = socRequest.SocId,
+                    ItemId = socRequest.SocId,
                     Api = $"{eventGridClientOptions.ApiEndpoint}/{socRequest.SocId}",
                     DisplayText = $"LMI transformed into job-group from {socRequest.Url}",
                     EventType = socRequest.IsDraftEnvironment ? EventTypeForDraft : EventTypeForPublished,
@@ -106,7 +106,7 @@ namespace DFC.Api.Lmi.Transformation.Functions
 
             var eventGridPostRequest = new EventGridPostRequestModel
             {
-                SocId = socRequest.SocId,
+                ItemId = socRequest.SocId,
                 Api = $"{eventGridClientOptions.ApiEndpoint}/{socRequest.SocId}",
                 DisplayText = $"LMI purged job-group for {socRequest.SocId}",
                 EventType = socRequest.IsDraftEnvironment ? EventTypeForDraftDiscarded : EventTypeForDeleted,
@@ -126,7 +126,7 @@ namespace DFC.Api.Lmi.Transformation.Functions
 
             var eventGridPostRequest = new EventGridPostRequestModel
             {
-                SocId = socRequest.SocId,
+                ItemId = Guid.NewGuid(),
                 Api = $"{eventGridClientOptions.ApiEndpoint}",
                 DisplayText = "LMI purged all job-group ",
                 EventType = socRequest.IsDraftEnvironment ? EventTypeForDraftDiscarded : EventTypeForDeleted,
@@ -161,7 +161,7 @@ namespace DFC.Api.Lmi.Transformation.Functions
 
                 var eventGridPostRequest = new EventGridPostRequestModel
                 {
-                    SocId = socRequest.SocId,
+                    ItemId = Guid.NewGuid(),
                     Api = $"{eventGridClientOptions.ApiEndpoint}",
                     DisplayText = $"LMI transformed all job-groups from {socRequest.Url}",
                     EventType = socRequest.IsDraftEnvironment ? EventTypeForDraft : EventTypeForPublished,
@@ -238,7 +238,7 @@ namespace DFC.Api.Lmi.Transformation.Functions
 
             var eventGridEventData = new EventGridEventData
             {
-                ItemId = $"{eventGridPostRequest.SocId}",
+                ItemId = $"{eventGridPostRequest.ItemId}",
                 Api = eventGridPostRequest.Api,
                 DisplayText = eventGridPostRequest.DisplayText,
                 VersionId = Guid.NewGuid().ToString(),
