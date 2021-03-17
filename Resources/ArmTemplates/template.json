@@ -129,11 +129,12 @@
     "cosmosDbEndpoint": "[concat('https://', parameters('cosmosDbName'), '.documents.azure.com:443/')]",
     "functionAppName": "[concat(variables('ResourcePrefix'), '-fa')]",
     "functionAppInsightsName": "[concat(variables('resourcePrefix'), '-ai')]",
+    "apimApiName": "[concat(parameters('apimProductName'), '-', parameters('apimApiName'))]",
     "ActionGroupName": "[concat('dfc-', replace(tolower(parameters('Environment')), '-draft', ''), '-app-sharedresources-actgrp')]"
   },
   "resources": [
     {
-      "name": "[parameters('apimLoggerName')]",
+      "name": "[concat('apim-logger-', parameters('apimLoggerName'))]",
       "type": "Microsoft.Resources/deployments",
       "resourceGroup": "[parameters('apimResourceGroup')]",
       "apiVersion": "2017-05-10",
@@ -154,7 +155,7 @@
       }
     },
     {
-      "name": "[parameters('apimProductName')]",
+      "name": "[concat('apim-product-', parameters('apimProductName'))]",
       "type": "Microsoft.Resources/deployments",
       "resourceGroup": "[parameters('apimResourceGroup')]",
       "apiVersion": "2017-05-10",
@@ -178,7 +179,7 @@
       }
     },
     {
-      "name": "[parameters('apimApiName')]",
+      "name": "[concat('apim-api-', variables('apimApiName'))]",
       "type": "Microsoft.Resources/deployments",
       "resourceGroup": "[parameters('apimResourceGroup')]",
       "apiVersion": "2017-05-10",
@@ -199,14 +200,14 @@
             "value": "[parameters('apimServiceName')]"
           },
           "apiName": {
-            "value": "[parameters('apimApiName')]"
+            "value": "[variables('apimApiName')]"
           }
         }
       },
       "dependsOn": [
-        "[parameters('apimProductName')]",
-        "[parameters('apimLoggerName')]"
-      ]
+        "[concat('apim-product-', parameters('apimProductName'))]",
+        "[concat('apim-logger-', parameters('apimLoggerName'))]"
+        ]
     },
     {
       "apiVersion": "2017-05-10",
@@ -317,7 +318,7 @@
               },
               {
                 "name": "ApiSuffix",
-                "value": "[if(contains(variables('resourcePrefix'),'draft'),'draft','')]"
+                "value": "[if(contains(variables('resourcePrefix'),'draft'),'(draft)','')]"
               },
               {
                 "name": "Configuration__CosmosDbConnections__LmiTransformation__AccessKey",
