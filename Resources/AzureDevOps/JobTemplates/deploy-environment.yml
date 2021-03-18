@@ -16,8 +16,6 @@ parameters:
   SharedResourceGroup: ''
   ApimServiceName: ''
   ApimProductInstanceName: ''
-  ApiName: ''
-  ApiId: ''
   FunctionAppDomain: ''
   ArmOutputVariableName: 'ARMOutputs'
   APIMPolicyPath: ''
@@ -75,3 +73,4 @@ jobs:
                 APIMProductName: '${{ parameters.ApimProductName }}'
                 APIMApiName: '${{ parameters.ApimApiName }}'
                 SubscriptionPosturi: '${{ parameters.SubscriptionPosturi }}'
+                APIMPolicyPath: '${{ parameters.APIMPolicyPath  }}'

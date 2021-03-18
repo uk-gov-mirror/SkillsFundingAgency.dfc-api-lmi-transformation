@@ -30,7 +30,7 @@ variables:
 - name: contentUrl
   value: $(ContentApiDraftAddress)/api/execute/
 - name: SubscriptionSettingsEndpoint
-  value: https://$(FunctionAppName).$(FunctionAppDomain)
+  value: $(ApimProxyAddress)/LMI/Transformation-draft/lmi/webhook?subscription-key=$(apimLmiKey)
 - name: subscriptionUrl
   value: https://dfc-dev-api-eventgridsubscriptions-fa.$(FunctionAppDomain)/api/execute/
 - name: EventGridPublishClientOptionsApiEndpoint
@@ -48,4 +48,6 @@ variables:
 - name: apimApiName
   value: Transformation-draft
 - name: SubscriptionPosturi
-  value: https://$(FunctionAppName).$(FunctionAppDomain)/api/subscription
+  value: https://$(FunctionAppName).$(FunctionAppDomain)/subscription/
+- name: FunctionAppUrl
+  value: https://$(FunctionAppName).$(FunctionAppDomain)

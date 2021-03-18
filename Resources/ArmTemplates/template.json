@@ -17,6 +17,9 @@
     "aspTier": {
       "type": "string"
     },
+    "ApimLmiKey": {
+      "type": "string"
+    },
     "aseHostingEnvironmentName": {
       "type": "string",
       "defaultValue": ""
@@ -87,9 +90,6 @@
       "metadata": {
         "description": "subscriptionUrl"
       }
-    },
-    "apimCompositeApiKey": {
-      "type": "securestring"
     },
     "EventGridAegSasKey": {
       "type": "securestring"
@@ -207,7 +207,7 @@
       "dependsOn": [
         "[concat('apim-product-', parameters('apimProductName'))]",
         "[concat('apim-logger-', parameters('apimLoggerName'))]"
-        ]
+      ]
     },
     {
       "apiVersion": "2017-05-10",
@@ -389,8 +389,12 @@
                 "value": "lmisoc"
               },
               {
+                "name": "CmsApiClientOptions__TimeOut",
+                "value": "00:01:00"
+              },
+              {
                 "name": "SubscriptionSettings__Endpoint",
-                "value": "[concat(parameters('SubscriptionSettingsEndpoint'),'/api/lmi/webhook')]"
+                "value": "[parameters('SubscriptionSettingsEndpoint')]"
               },
               {
                 "name": "SubscriptionSettings__SubscriptionServiceEndpoint",
@@ -398,7 +402,7 @@
               },
               {
                 "name": "SubscriptionSettings__ApiKey",
-                "value": "[parameters('apimCompositeApiKey')]"
+                "value": "[parameters('apimLmiKey')]"
               },
               {
                 "name": "SubscriptionSettings__Filter__BeginsWith",
