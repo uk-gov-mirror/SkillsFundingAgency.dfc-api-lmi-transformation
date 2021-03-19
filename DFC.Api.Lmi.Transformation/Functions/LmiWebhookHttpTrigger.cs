@@ -1,4 +1,5 @@
-﻿using DFC.Api.Lmi.Transformation.Contracts;
+﻿using DFC.Api.Lmi.Transformation.Common;
+using DFC.Api.Lmi.Transformation.Contracts;
 using DFC.Api.Lmi.Transformation.Enums;
 using DFC.Api.Lmi.Transformation.Models.FunctionRequestModels;
 using DFC.Swagger.Standard.Annotations;
@@ -32,7 +33,7 @@ namespace DFC.Api.Lmi.Transformation.Functions
         [FunctionName("LmiWebhook")]
         [Display(Name = "LMI Webhook", Description = "Receives webhook Post requests for LMI refresh.")]
         [Response(HttpStatusCode = (int)HttpStatusCode.OK, Description = "Page processed", ShowSchema = false)]
-        [Response(HttpStatusCode = (int)HttpStatusCode.BadRequest, Description = "Invalid request data", ShowSchema = false)]
+        [Response(HttpStatusCode = (int)HttpStatusCode.BadRequest, Description = "Invalid request data or wrong environment", ShowSchema = false)]
         [Response(HttpStatusCode = (int)HttpStatusCode.InternalServerError, Description = "Internal error caught and logged", ShowSchema = false)]
         [Response(HttpStatusCode = (int)HttpStatusCode.Unauthorized, Description = "API key is unknown or invalid", ShowSchema = false)]
         [Response(HttpStatusCode = (int)HttpStatusCode.Forbidden, Description = "Insufficient access", ShowSchema = false)]
@@ -45,7 +46,7 @@ namespace DFC.Api.Lmi.Transformation.Functions
             {
                 logger.LogInformation("Received webhook request");
 
-                bool isDraftEnvironment = !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("ApiSuffix"));
+                bool isDraftEnvironment = !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable(Constants.EnvironmentNameApiSuffix));
                 using var streamReader = new StreamReader(request?.Body!);
                 var requestBody = await streamReader.ReadToEndAsync().ConfigureAwait(false);
 
@@ -63,6 +64,11 @@ namespace DFC.Api.Lmi.Transformation.Functions
                     case WebhookCommand.SubscriptionValidation:
                         return new OkObjectResult(webhookRequestModel.SubscriptionValidationResponse);
                     case WebhookCommand.TransformAllSocToJobGroup:
+                        if (!isDraftEnvironment)
+                        {
+                            return new StatusCodeResult((int)HttpStatusCode.BadRequest);
+                        }
+
                         socRequest = new SocRequestModel
                         {
                             Url = webhookRequestModel.Url,
@@ -71,6 +77,11 @@ namespace DFC.Api.Lmi.Transformation.Functions
                         instanceId = await starter.StartNewAsync(nameof(LmiOrchestrationTrigger.RefreshOrchestrator), socRequest).ConfigureAwait(false);
                         break;
                     case WebhookCommand.TransformSocToJobGroup:
+                        if (!isDraftEnvironment)
+                        {
+                            return new StatusCodeResult((int)HttpStatusCode.BadRequest);
+                        }
+
                         socRequest = new SocRequestModel
                         {
                             Url = webhookRequestModel.Url,
@@ -80,6 +91,11 @@ namespace DFC.Api.Lmi.Transformation.Functions
                         instanceId = await starter.StartNewAsync(nameof(LmiOrchestrationTrigger.RefreshJobGroupOrchestrator), socRequest).ConfigureAwait(false);
                         break;
                     case WebhookCommand.PurgeAllJobGroups:
+                        if (!isDraftEnvironment)
+                        {
+                            return new StatusCodeResult((int)HttpStatusCode.BadRequest);
+                        }
+
                         socRequest = new SocRequestModel
                         {
                             Url = webhookRequestModel.Url,
@@ -88,6 +104,11 @@ namespace DFC.Api.Lmi.Transformation.Functions
                         instanceId = await starter.StartNewAsync(nameof(LmiOrchestrationTrigger.PurgeOrchestrator), socRequest).ConfigureAwait(false);
                         break;
                     case WebhookCommand.PurgeJobGroup:
+                        if (!isDraftEnvironment)
+                        {
+                            return new StatusCodeResult((int)HttpStatusCode.BadRequest);
+                        }
+
                         socRequest = new SocRequestModel
                         {
                             Url = webhookRequestModel.Url,
