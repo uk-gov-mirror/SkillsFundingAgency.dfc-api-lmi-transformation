@@ -23,10 +23,6 @@ variables:
   value: true
 - name: cosmosJobGroupDbCollectionName
   value: job-groups-draft
-- name: cosmosJobGroupTempDbCollectionName
-  value: job-groups-temp-draft
-- name: cosmosJobGroupDiffDbCollectionName
-  value: job-groups-differences-draft
 - name: contentUrl
   value: $(ContentApiDraftAddress)/api/execute/
 - name: SubscriptionSettingsEndpoint

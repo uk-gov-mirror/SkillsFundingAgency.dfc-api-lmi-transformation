@@ -41,12 +41,6 @@
       "cosmosJobGroupDbCollectionName": {
         "value": "cosmosJobGroupDbCollectionName"
       },
-      "cosmosJobGroupTempDbCollectionName": {
-        "value": "cosmosJobGroupTempDbCollectionName"
-      },
-      "cosmosJobGroupDiffDbCollectionName": {
-        "value": "cosmosJobGroupDiffDbCollectionName"
-      },
       "appSharedStorageAccountName": {
         "value": "dfcdevappsharedstr"
       },

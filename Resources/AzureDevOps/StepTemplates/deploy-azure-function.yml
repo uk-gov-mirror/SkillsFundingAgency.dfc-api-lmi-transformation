@@ -54,10 +54,6 @@ steps:
     ResourceGroupName: '${{ parameters.ResourceGroup }}'
     Slot: staging
 
-- powershell: |
-    Write-Host "##vso[task.setvariable variable=FunctionAppUrl]https://${{ parameters.WebAppName }}.${{ parameters.FunctionAppDomain }}"
-  displayName: "Set full hostname as variable"
-
 - task: AzurePowerShell@4
   displayName: 'Import OpenAPI specification'
   inputs:

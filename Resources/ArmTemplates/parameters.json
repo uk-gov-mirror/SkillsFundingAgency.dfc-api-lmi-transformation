@@ -29,12 +29,6 @@
       "cosmosJobGroupDbCollectionName": {
         "value": "__cosmosJobGroupDbCollectionName__"
       },
-      "cosmosJobGroupTempDbCollectionName": {
-        "value": "__cosmosJobGroupTempDbCollectionName__"
-      },
-      "cosmosJobGroupDiffDbCollectionName": {
-        "value": "__cosmosJobGroupDiffDbCollectionName__"
-      },
       "lmiTransformationAppDatabaseNeedsCreation": {
           "value": __CosmosDbDatabaseDoesntExist__
       },
