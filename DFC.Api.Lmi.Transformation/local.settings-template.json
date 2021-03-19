@@ -14,20 +14,6 @@
         "DatabaseId": "dfc-api-lmi-transformation",
         "CollectionId": "job-groups",
         "PartitionKey": "/PartitionKey"
-      },
-      "LmiTemp": {
-        "AccessKey": "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==",
-        "EndpointUrl": "https://localhost:8081/",
-        "DatabaseId": "dfc-api-lmi-transformation",
-        "CollectionId": "job-groups-temp",
-        "PartitionKey": "/PartitionKey"
-      },
-      "LmiDifferences": {
-        "AccessKey": "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==",
-        "EndpointUrl": "https://localhost:8081/",
-        "DatabaseId": "dfc-api-lmi-transformation",
-        "CollectionId": "job-groups-differences",
-        "PartitionKey": "/PartitionKey"
       }
     }
   },

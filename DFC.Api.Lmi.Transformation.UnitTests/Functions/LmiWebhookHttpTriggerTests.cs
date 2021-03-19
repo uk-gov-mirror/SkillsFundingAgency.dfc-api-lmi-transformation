@@ -1,4 +1,5 @@
-﻿using DFC.Api.Lmi.Transformation.Contracts;
+﻿using DFC.Api.Lmi.Transformation.Common;
+using DFC.Api.Lmi.Transformation.Contracts;
 using DFC.Api.Lmi.Transformation.Enums;
 using DFC.Api.Lmi.Transformation.Functions;
 using DFC.Api.Lmi.Transformation.Models.FunctionRequestModels;
@@ -23,6 +24,11 @@ namespace DFC.Api.Lmi.Transformation.UnitTests.Functions
         private readonly ILogger<LmiWebhookHttpTrigger> fakeLogger = A.Fake<ILogger<LmiWebhookHttpTrigger>>();
         private readonly ILmiWebhookReceiverService fakeLmiWebhookReceiverService = A.Fake<ILmiWebhookReceiverService>();
         private readonly IDurableOrchestrationClient fakeDurableOrchestrationClient = A.Fake<IDurableOrchestrationClient>();
+
+        public LmiWebhookHttpTriggerTests()
+        {
+            Environment.SetEnvironmentVariable(Constants.EnvironmentNameApiSuffix, "(draft)");
+        }
 
         [Fact]
         public async Task LmiWebhookHttpTriggerPostForSubscriptionValidationReturnsOk()

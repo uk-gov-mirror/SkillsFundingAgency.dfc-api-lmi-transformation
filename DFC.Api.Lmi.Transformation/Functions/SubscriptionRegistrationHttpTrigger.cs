@@ -1,4 +1,5 @@
-﻿using DFC.Compui.Subscriptions.Pkg.NetStandard.Data.Contracts;
+﻿using DFC.Api.Lmi.Transformation.Common;
+using DFC.Compui.Subscriptions.Pkg.NetStandard.Data.Contracts;
 using DFC.Swagger.Standard.Annotations;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -37,7 +38,7 @@ namespace DFC.Api.Lmi.Transformation.Functions
 
             try
             {
-                var apiSuffix = Environment.GetEnvironmentVariable("ApiSuffix");
+                var apiSuffix = Environment.GetEnvironmentVariable(Constants.EnvironmentNameApiSuffix);
                 if (!string.IsNullOrWhiteSpace(apiSuffix))
                 {
                     apiSuffix = "-" + apiSuffix
