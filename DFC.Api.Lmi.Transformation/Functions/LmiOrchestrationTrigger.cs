@@ -204,6 +204,7 @@ namespace DFC.Api.Lmi.Transformation.Functions
         }
 
         [FunctionName(nameof(TransformItemActivity))]
+        [Timeout("01:00:00")]
         public async Task<HttpStatusCode> TransformItemActivity([ActivityTrigger] Uri? url)
         {
             _ = url ?? throw new ArgumentNullException(nameof(url));
