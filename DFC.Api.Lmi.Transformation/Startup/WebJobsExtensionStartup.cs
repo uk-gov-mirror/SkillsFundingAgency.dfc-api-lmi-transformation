@@ -47,6 +47,7 @@ namespace DFC.Api.Lmi.Transformation.Startup
             builder.Services.AddAutoMapper(typeof(WebJobsExtensionStartup).Assembly);
             builder.Services.AddDocumentServices<JobGroupModel>(cosmosDbConnection, false);
             builder.Services.AddSubscriptionService(configuration);
+            builder.Services.AddSingleton(new EnvironmentValues());
             builder.Services.AddTransient<ISwaggerDocumentGenerator, SwaggerDocumentGenerator>();
             builder.Services.AddTransient<ILmiWebhookReceiverService, LmiWebhookReceiverService>();
             builder.Services.AddTransient<IEventGridService, EventGridService>();

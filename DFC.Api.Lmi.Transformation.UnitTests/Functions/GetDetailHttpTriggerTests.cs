@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Linq.Expressions;
 using System.Net;
 using System.Threading.Tasks;
 using Xunit;
@@ -16,11 +15,11 @@ namespace DFC.Api.Lmi.Transformation.UnitTests.Functions
     [Trait("Category", "GetDetai - http trigger function Unit Tests")]
     public class GetDetailHttpTriggerTests
     {
-        private Guid SocId = Guid.NewGuid();
-
         private readonly ILogger<GetDetailHttpTrigger> fakeLogger = A.Fake<ILogger<GetDetailHttpTrigger>>();
         private readonly IDocumentService<JobGroupModel> fakeDocumentService = A.Fake<IDocumentService<JobGroupModel>>();
         private readonly GetDetailHttpTrigger getDetailHttpTrigger;
+
+        private Guid socId = Guid.NewGuid();
 
         public GetDetailHttpTriggerTests()
         {
@@ -37,7 +36,7 @@ namespace DFC.Api.Lmi.Transformation.UnitTests.Functions
             A.CallTo(() => fakeDocumentService.GetByIdAsync(A<Guid>.Ignored, A<string>.Ignored)).Returns(dummyModel);
 
             // Act
-            var result = await getDetailHttpTrigger.Run(A.Fake<HttpRequest>(), SocId).ConfigureAwait(false);
+            var result = await getDetailHttpTrigger.Run(A.Fake<HttpRequest>(), socId).ConfigureAwait(false);
 
             // Assert
             A.CallTo(() => fakeDocumentService.GetByIdAsync(A<Guid>.Ignored, A<string>.Ignored)).MustHaveHappenedOnceExactly();
@@ -56,7 +55,7 @@ namespace DFC.Api.Lmi.Transformation.UnitTests.Functions
             A.CallTo(() => fakeDocumentService.GetByIdAsync(A<Guid>.Ignored, A<string>.Ignored)).Returns(nullModel);
 
             // Act
-            var result = await getDetailHttpTrigger.Run(A.Fake<HttpRequest>(), SocId).ConfigureAwait(false);
+            var result = await getDetailHttpTrigger.Run(A.Fake<HttpRequest>(), socId).ConfigureAwait(false);
 
             // Assert
             A.CallTo(() => fakeDocumentService.GetByIdAsync(A<Guid>.Ignored, A<string>.Ignored)).MustHaveHappenedOnceExactly();

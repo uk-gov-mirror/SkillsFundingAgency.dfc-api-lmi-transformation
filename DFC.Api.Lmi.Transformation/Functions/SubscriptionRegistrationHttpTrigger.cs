@@ -1,4 +1,4 @@
-﻿using DFC.Api.Lmi.Transformation.Common;
+﻿using DFC.Api.Lmi.Transformation.Models;
 using DFC.Compui.Subscriptions.Pkg.NetStandard.Data.Contracts;
 using DFC.Swagger.Standard.Annotations;
 using Microsoft.AspNetCore.Http;
@@ -17,13 +17,16 @@ namespace DFC.Api.Lmi.Transformation.Functions
     public class SubscriptionRegistrationHttpTrigger
     {
         private readonly ILogger<SubscriptionRegistrationHttpTrigger> logger;
+        private readonly EnvironmentValues environmentValues;
         private readonly ISubscriptionRegistrationService subscriptionRegistrationService;
 
         public SubscriptionRegistrationHttpTrigger(
            ILogger<SubscriptionRegistrationHttpTrigger> logger,
+           EnvironmentValues environmentValues,
            ISubscriptionRegistrationService subscriptionRegistrationService)
         {
             this.logger = logger;
+            this.environmentValues = environmentValues;
             this.subscriptionRegistrationService = subscriptionRegistrationService;
         }
 
@@ -35,10 +38,9 @@ namespace DFC.Api.Lmi.Transformation.Functions
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "subscription/")] HttpRequest? request)
         {
             logger.LogInformation("Request received for SubscriptionRegistration");
-
             try
             {
-                var apiSuffix = Environment.GetEnvironmentVariable(Constants.EnvironmentNameApiSuffix);
+                var apiSuffix = environmentValues.EnvironmentNameApiSuffix;
                 if (!string.IsNullOrWhiteSpace(apiSuffix))
                 {
                     apiSuffix = "-" + apiSuffix
