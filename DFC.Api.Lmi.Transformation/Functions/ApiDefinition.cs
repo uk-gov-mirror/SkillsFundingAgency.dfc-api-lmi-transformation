@@ -1,12 +1,11 @@
 ﻿using AzureFunctions.Extensions.Swashbuckle;
 using AzureFunctions.Extensions.Swashbuckle.Attribute;
-using DFC.Api.Lmi.Transformation.Common;
+using DFC.Api.Lmi.Transformation.Models;
 using DFC.Swagger.Standard;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
-using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Reflection;
@@ -24,10 +23,12 @@ namespace DFC.Api.Lmi.Transformation.Functions
         private const string ApiVersion = "0.1.0";
 
         private readonly ISwaggerDocumentGenerator swaggerDocumentGenerator;
+        private readonly EnvironmentValues environmentValues;
 
-        public ApiDefinition(ISwaggerDocumentGenerator swaggerDocumentGenerator)
+        public ApiDefinition(ISwaggerDocumentGenerator swaggerDocumentGenerator, EnvironmentValues environmentValues)
         {
             this.swaggerDocumentGenerator = swaggerDocumentGenerator;
+            this.environmentValues = environmentValues;
         }
 
         [SwaggerIgnore]
@@ -44,7 +45,7 @@ namespace DFC.Api.Lmi.Transformation.Functions
         [FunctionName("SwaggerJson")]
         public async Task<IActionResult> SwaggerJson([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = SwaggerJsonRoute)] HttpRequest request)
         {
-            var apiSuffix = Environment.GetEnvironmentVariable(Constants.EnvironmentNameApiSuffix);
+            var apiSuffix = environmentValues.EnvironmentNameApiSuffix;
             var apiTitle = "LMI Transformation API " + apiSuffix;
             var swaggerDoc = await Task.FromResult(swaggerDocumentGenerator.GenerateSwaggerDocument(
                 request,

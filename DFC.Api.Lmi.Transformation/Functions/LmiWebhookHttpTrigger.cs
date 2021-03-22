@@ -1,6 +1,6 @@
-﻿using DFC.Api.Lmi.Transformation.Common;
-using DFC.Api.Lmi.Transformation.Contracts;
+﻿using DFC.Api.Lmi.Transformation.Contracts;
 using DFC.Api.Lmi.Transformation.Enums;
+using DFC.Api.Lmi.Transformation.Models;
 using DFC.Api.Lmi.Transformation.Models.FunctionRequestModels;
 using DFC.Swagger.Standard.Annotations;
 using Microsoft.AspNetCore.Http;
@@ -20,13 +20,16 @@ namespace DFC.Api.Lmi.Transformation.Functions
     public class LmiWebhookHttpTrigger
     {
         private readonly ILogger<LmiWebhookHttpTrigger> logger;
+        private readonly EnvironmentValues environmentValues;
         private readonly ILmiWebhookReceiverService lmiWebhookReceiverService;
 
         public LmiWebhookHttpTrigger(
            ILogger<LmiWebhookHttpTrigger> logger,
+           EnvironmentValues environmentValues,
            ILmiWebhookReceiverService lmiWebhookReceiverService)
         {
             this.logger = logger;
+            this.environmentValues = environmentValues;
             this.lmiWebhookReceiverService = lmiWebhookReceiverService;
         }
 
@@ -46,14 +49,14 @@ namespace DFC.Api.Lmi.Transformation.Functions
             {
                 logger.LogInformation("Received webhook request");
 
-                bool isDraftEnvironment = !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable(Constants.EnvironmentNameApiSuffix));
+                bool isDraftEnvironment = environmentValues.IsDraftEnvironment;
                 using var streamReader = new StreamReader(request?.Body!);
                 var requestBody = await streamReader.ReadToEndAsync().ConfigureAwait(false);
 
                 if (string.IsNullOrEmpty(requestBody))
                 {
                     logger.LogError($"{nameof(request)} body is null");
-                    return new StatusCodeResult((int)HttpStatusCode.BadRequest);
+                    return new BadRequestResult();
                 }
 
                 string? instanceId = null;
@@ -66,7 +69,7 @@ namespace DFC.Api.Lmi.Transformation.Functions
                     case WebhookCommand.TransformAllSocToJobGroup:
                         if (!isDraftEnvironment)
                         {
-                            return new StatusCodeResult((int)HttpStatusCode.BadRequest);
+                            return new BadRequestResult();
                         }
 
                         socRequest = new SocRequestModel
@@ -79,7 +82,7 @@ namespace DFC.Api.Lmi.Transformation.Functions
                     case WebhookCommand.TransformSocToJobGroup:
                         if (!isDraftEnvironment)
                         {
-                            return new StatusCodeResult((int)HttpStatusCode.BadRequest);
+                            return new BadRequestResult();
                         }
 
                         socRequest = new SocRequestModel
@@ -93,7 +96,7 @@ namespace DFC.Api.Lmi.Transformation.Functions
                     case WebhookCommand.PurgeAllJobGroups:
                         if (!isDraftEnvironment)
                         {
-                            return new StatusCodeResult((int)HttpStatusCode.BadRequest);
+                            return new BadRequestResult();
                         }
 
                         socRequest = new SocRequestModel
@@ -106,7 +109,7 @@ namespace DFC.Api.Lmi.Transformation.Functions
                     case WebhookCommand.PurgeJobGroup:
                         if (!isDraftEnvironment)
                         {
-                            return new StatusCodeResult((int)HttpStatusCode.BadRequest);
+                            return new BadRequestResult();
                         }
 
                         socRequest = new SocRequestModel
@@ -118,7 +121,7 @@ namespace DFC.Api.Lmi.Transformation.Functions
                         instanceId = await starter.StartNewAsync(nameof(LmiOrchestrationTrigger.PurgeJobGroupOrchestrator), socRequest).ConfigureAwait(false);
                         break;
                     default:
-                        return new StatusCodeResult((int)HttpStatusCode.BadRequest);
+                        return new BadRequestResult();
                 }
 
                 logger.LogInformation($"Started orchestration with ID = '{instanceId}' for SOC {socRequest?.Url}");
